@@ -7,6 +7,6 @@ var (
 	r = gin.Default();
 )
 func main() {
-	
+	r.Static("/static", "./static")
 	r.Run(":8080")
 }
