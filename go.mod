@@ -6,6 +6,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.8.1
+	github.com/gorilla/websocket v1.5.0
 	github.com/microcosm-cc/bluemonday v1.0.21
 	github.com/yangxikun/gin-limit-by-key v0.0.0-20190512072151-520697354d5f
 	go.mongodb.org/mongo-driver v1.11.1
