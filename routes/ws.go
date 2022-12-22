@@ -22,15 +22,20 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 		fmt.Println("New client connected")
 		//join them to room
 		c.Join("chat")
-		server.BroadcastTo("chat", "echo", map[string]interface{}{
-			"text": "hello",
-		})
+
 		
 	})
-	server.On("echo", func(c *f.Channel, msg Echo) string {
+	server.On("echo", func(c *f.Channel, msg Echo) any {
 		//send event to all in room
-		
-		return ""
+		// server.BroadcastTo("chat", "echo", map[string]interface{}{
+		// 	"text": "hello",
+		// })
+		// c.Emit("echo", map[string]interface{}{
+		// 		"text": msg.Text,
+		// 	})
+		return map[string]interface{}{
+			"text": msg.Text,
+		}
 	})
 
 	// f.OnConnect(func(client *f.Client, request *f.Request) {
