@@ -2,35 +2,51 @@ package routes
 
 import (
 	"fmt"
-
 	"github.com/gin-gonic/gin"
 
-	f "github.com/ambelovsky/gosf"
+	f "github.com/ambelovsky/gosf-socketio"
+	"github.com/ambelovsky/gosf-socketio/transport"
 )
-
-func LoadWebSocket(r *gin.Engine) {
+type Echo struct {
+	Text string `json:"text"`
+}
+func LoadWebSocket(r *gin.Engine) *f.Server {
 	
-
+	server := f.NewServer(transport.GetDefaultWebsocketTransport())
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
 	// 	f.Broadcast("", request.Endpoint, f.NewSuccessMessage("hello"))
 	// 	fmt.Print(request.Endpoint)
 	// 	return f.NewSuccessMessage(request.Message.Text)
 	//   })
-	
-	f.OnConnect(func(client *f.Client, request *f.Request) {
-		// f.Broadcast()
-		client.Join("test")
-		f.Broadcast("", "echo", f.NewSuccessMessage("hellkyrdyjrsjyjsryjsryjsrsyrzjo"))
-		fmt.Println("connected to client")
+	server.On(f.OnConnection, func(c *f.Channel) {
+		fmt.Println("New client connected")
+		//join them to room
+		c.Join("chat")
+		server.BroadcastTo("chat", "echo", map[string]interface{}{
+			"text": "hello",
+		})
 		
 	})
-	f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
+	server.On("echo", func(c *f.Channel, msg Echo) string {
+		//send event to all in room
 		
-		fmt.Print(client.Rooms)
-		
-		return f.NewSuccessMessage("j")
+		return ""
 	})
-	fmt.Println("hello")
-	f.Startup(map[string]interface{}{
-		"port": 3000})
+
+	// f.OnConnect(func(client *f.Client, request *f.Request) {
+	// 	// f.Broadcast()
+	// 	client.Join("test")
+	// 	f.Broadcast("", "echo", f.NewSuccessMessage("hellkyrdyjrsjyjsryjsryjsrsyrzjo"))
+	// 	fmt.Println("connected to client")
+		
+	// })
+	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
+		
+	// 	fmt.Print(client.Rooms)
+		
+	// 	return f.NewSuccessMessage("j")
+	// })
+	// fmt.Println("hello")
+	// go f.Startup(map[string]interface{}{"port": 8080})
+	return server
 }

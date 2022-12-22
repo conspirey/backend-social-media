@@ -3,7 +3,7 @@ module main
 go 1.19
 
 require (
-	github.com/ambelovsky/gosf v0.0.0-20201109201340-237aea4d6109
+	github.com/ambelovsky/gosf-socketio v0.0.0-20220810204405-0f97832ec7af
 	github.com/dchest/uniuri v1.2.0
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.8.1
@@ -14,8 +14,6 @@ require (
 )
 
 require (
-	github.com/ambelovsky/go-structs v1.1.0 // indirect
-	github.com/ambelovsky/gosf-socketio v0.0.0-20220810204405-0f97832ec7af // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
@@ -32,7 +30,6 @@ require (
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
