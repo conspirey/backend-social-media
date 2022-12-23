@@ -30,12 +30,13 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 		// server.BroadcastTo("chat", "echo", map[string]interface{}{
 		// 	"text": "hello",
 		// })
+		server.BroadcastTo("chat", "echo", map[string]interface{}{
+					"text": msg.Text,
+				})
 		// c.Emit("echo", map[string]interface{}{
 		// 		"text": msg.Text,
 		// 	})
-		return map[string]interface{}{
-			"text": msg.Text,
-		}
+		return "OK"
 	})
 
 	// f.OnConnect(func(client *f.Client, request *f.Request) {
