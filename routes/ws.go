@@ -20,9 +20,9 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 	// 	return f.NewSuccessMessage(request.Message.Text)
 	//   })
 	server.On(f.OnConnection, func(c *f.Channel) {
-	
+		
 		fmt.Println("New client connected")
-		fmt.Println(c.Request().Cookies())
+		fmt.Println(c.Request().Cookies()[0].Value)
 		// session.Set("user", map[string]any{
 		// 	"password": "123",
 		// 	"name": "mrredo",

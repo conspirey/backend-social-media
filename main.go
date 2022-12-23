@@ -47,8 +47,10 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
+	
 	r.GET("/set", func(c *gin.Context) {
 		session := sessions.Default(c)
+		
 		session.Set("user", map[string]any{
 			"password": "123",
 			"name": "mrredo",
