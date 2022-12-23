@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
+	"encoding/gob"
+	"fmt"
 	"log"
-	"main/routes"
 	"main/functions"
+	"main/routes"
 	"time"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/google/go-cmp/cmp/internal/function"
 
 	//f "github.com/ambelovsky/gosf"
 	"github.com/gin-contrib/sessions/mongo/mongodriver"
@@ -20,6 +21,8 @@ var (
 	r = gin.Default();
 )
 func main() {
+	gob.Register(map[string]interface{}{})
+	gob.Register(map[interface{}]interface{}{})
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
 	clientOptions := options.Client().
     ApplyURI("mongodb+srv://redobot:dbuserpassword123@cluster0.rhc8q.mongodb.net/Cluster0?retryWrites=true&w=majority").
@@ -42,7 +45,16 @@ func main() {
 	r.POST("/socket.io/", gin.WrapH(server))
 	//r.GET("/socket.io/", gin.WrapH(f))
 	r.GET("/", func(c *gin.Context) {
-		c.String(200, "hello")
+		c.JSON(200, sessions.Default(c).Get("user"))
+	})
+	r.GET("/set", func(c *gin.Context) {
+		session := sessions.Default(c)
+		session.Set("user", map[string]any{
+			"password": "123",
+			"name": "mrredo",
+		})
+		fmt.Println(session.Save())
+		c.JSON(200, sessions.Default(c).Get("user"))
 	})
 	r.Run("localhost:8080")
 

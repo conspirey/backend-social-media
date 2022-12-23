@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 
 	f "github.com/ambelovsky/gosf-socketio"
@@ -19,7 +20,14 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 	// 	return f.NewSuccessMessage(request.Message.Text)
 	//   })
 	server.On(f.OnConnection, func(c *f.Channel) {
+	
 		fmt.Println("New client connected")
+		fmt.Println(c.Request().Cookies())
+		// session.Set("user", map[string]any{
+		// 	"password": "123",
+		// 	"name": "mrredo",
+		// })
+		// fmt.Println(session.Save())
 		//join them to room
 		c.Join("chat")
 
