@@ -3,7 +3,6 @@ package routes
 import (
 	"fmt"
 	"main/functions"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -16,6 +15,7 @@ type Echo struct {
 func LoadWebSocket(r *gin.Engine) *f.Server {
 	
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
+	
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
 	// 	f.Broadcast("", request.Endpoint, f.NewSuccessMessage("hello"))
 	// 	fmt.Print(request.Endpoint)
@@ -26,7 +26,8 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 		
 		fmt.Println("New client connected")
 		if len(c.Request().Cookies()) != 0 {
-			fmt.Println(functions.DecodeB64(strings.Split(c.Request().Header["Cookie"][0], "=")[1]))
+			cook, _ :=c.Request().Cookie("Cookie")
+			functions.ConvertCookieValueToJSON(*cook)
 		}
 		
 		
