@@ -2,7 +2,6 @@ package routes
 
 import (
 	"fmt"
-	"main/functions"
 
 	"github.com/gin-gonic/gin"
 
@@ -25,10 +24,7 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 	server.On(f.OnConnection, func(c *f.Channel) {
 		
 		fmt.Println("New client connected")
-		if len(c.Request().Cookies()) != 0 {
-			cook, _ :=c.Request().Cookie("Cookie")
-			functions.ConvertCookieValueToJSON(*cook)
-		}
+
 		
 		
 		
