@@ -2,6 +2,8 @@ package routes
 
 import (
 	"fmt"
+	"main/functions"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 
@@ -19,10 +21,18 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 	// 	fmt.Print(request.Endpoint)
 	// 	return f.NewSuccessMessage(request.Message.Text)
 	//   })
+	
 	server.On(f.OnConnection, func(c *f.Channel) {
 		
 		fmt.Println("New client connected")
-		fmt.Println(c.Request().Cookies()[0].Value)
+		if len(c.Request().Cookies()) != 0 {
+			fmt.Println(functions.DecodeB64(strings.Split(c.Request().Header["Cookie"][0], "=")[1]))
+		}
+		
+		
+		
+	
+ 		
 		// session.Set("user", map[string]any{
 		// 	"password": "123",
 		// 	"name": "mrredo",

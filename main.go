@@ -58,6 +58,7 @@ func main() {
 		fmt.Println(session.Save())
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
+	functions.Testing()
 	r.Run("localhost:8080")
 
 	//defer f.Shutdown()
