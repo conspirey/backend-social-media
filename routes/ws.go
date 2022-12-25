@@ -11,8 +11,7 @@ import (
 type Echo struct {
 	Text string `json:"text"`
 }
-func LoadWebSocket(r *gin.Engine) *f.Server {
-	
+func LoadWebSocket(r *gin.Engine, keypair any) *f.Server {
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
 	
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
@@ -25,10 +24,10 @@ func LoadWebSocket(r *gin.Engine) *f.Server {
 		
 		fmt.Println("New client connected")
 
+
 		
 		
 		
-	
  		
 		// session.Set("user", map[string]any{
 		// 	"password": "123",
