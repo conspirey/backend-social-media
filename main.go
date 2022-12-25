@@ -56,6 +56,7 @@ func main() {
 			"name": "mrredo",
 		})
 		fmt.Println(session.Save())
+		
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
 	r.Run("localhost:8080")
