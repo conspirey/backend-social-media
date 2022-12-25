@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/gob"
+	"net/http"
 	"fmt"
 	"log"
 	"main/functions"
@@ -20,6 +21,7 @@ import (
 var (
 	r = gin.Default();
 )
+
 func main() {
 	gob.Register(map[string]interface{}{})
 	gob.Register(map[interface{}]interface{}{})
@@ -41,7 +43,9 @@ func main() {
 	server := routes.LoadWebSocket(r)
 	r.Use(sessions.Sessions("mysession", store))
 	r.Static("/static", "./static")
-	r.GET("/socket.io/", gin.WrapH(server))
+	r.GET("/socket.io/", func(c *gin.Context) {
+		RunHTTPHandler(server, c)
+	})
 	r.POST("/socket.io/", gin.WrapH(server))
 	//r.GET("/socket.io/", gin.WrapH(f))
 	r.GET("/", func(c *gin.Context) {
@@ -55,11 +59,16 @@ func main() {
 			"password": "123",
 			"name": "mrredo",
 		})
+		
 		fmt.Println(session.Save())
 		
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
+	functions.Testing()
 	r.Run("localhost:8080")
 
 	//defer f.Shutdown()
+}
+func RunHTTPHandler(h http.Handler, c *gin.Context) {
+	h.ServeHTTP(c.Writer, c.Request)
 }

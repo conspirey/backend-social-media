@@ -14,15 +14,22 @@ type Echo struct {
 func LoadWebSocket(r *gin.Engine) *f.Server {
 	
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
+	
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
 	// 	f.Broadcast("", request.Endpoint, f.NewSuccessMessage("hello"))
 	// 	fmt.Print(request.Endpoint)
 	// 	return f.NewSuccessMessage(request.Message.Text)
 	//   })
+	
 	server.On(f.OnConnection, func(c *f.Channel) {
 		
 		fmt.Println("New client connected")
-		fmt.Println(c.Request().Cookies()[0].Value)
+
+		
+		
+		
+	
+ 		
 		// session.Set("user", map[string]any{
 		// 	"password": "123",
 		// 	"name": "mrredo",
