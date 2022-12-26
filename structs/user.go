@@ -15,11 +15,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 const (
+	/*
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	*/
 	key = "jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$"
 	
 )
 var (
-	NAME_REGEX = regexp.MustCompile("")
+	NAME_REGEX = regexp.MustCompile("`(?m)^[a-zA-Z0-9_]{3,16}$`")
+	PASSWORD_REGEX = regexp.MustCompile(`(?m)^.{8,32}$`)
 )
 type User struct {
 	Name     string `json:"name"`
@@ -28,6 +36,9 @@ type User struct {
 }
 func (user *User) Key() string {
 	return key
+}
+func (user *User) IsValidPass() bool {
+	return PASSWORD_REGEX.MatchString(user.Password) 
 }
 func (user *User) IsValidName() bool {
 	return NAME_REGEX.MatchString(user.Name) 
@@ -82,15 +93,20 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	user.Password = password
 	_, errs := user.EncryptPassword(true)
 	if errs != nil {
-		return errs
+		return errors.New("Failed Account Creation: password could not be encrypted")
 	}
 	if !user.AccountExists(db) {
 		user.ID = user.CreateID()
 		if !user.ValidID() {
-			return errors.New("Invalid id generated")
+			return errors.New("Failed Account Creation: Invalid id generated")
 		}
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
-		return err
+		if err != nil {
+			return errors.New("Failed Account Creation: Account could not be created")
+		}
+		
+	} else {
+		return errors.New("Failed Account Creation: Account already exists")
 	}
 	return nil
 }
