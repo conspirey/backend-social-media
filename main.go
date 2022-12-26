@@ -9,10 +9,8 @@ import (
 	"main/routes"
 	"net/http"
 	"time"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/securecookie"
 
 	//f "github.com/ambelovsky/gosf"
 	"github.com/gin-contrib/sessions/mongo/mongodriver"
@@ -53,7 +51,7 @@ func main() {
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
-	
+
 	r.GET("/set", func(c *gin.Context) {
 		session := sessions.Default(c)
 		
@@ -66,7 +64,7 @@ func main() {
 		
 		c.JSON(200, sessions.Default(c).Get("user"))
 	})
-	functions.Testing()
+
 	r.Run("localhost:8080")
 
 	//defer f.Shutdown()

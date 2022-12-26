@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	// "github.com/gorilla/securecookie"
 
 	f "github.com/ambelovsky/gosf-socketio"
 	"github.com/ambelovsky/gosf-socketio/transport"
@@ -11,7 +12,7 @@ import (
 type Echo struct {
 	Text string `json:"text"`
 }
-func LoadWebSocket(r *gin.Engine, keypair any) *f.Server {
+func LoadWebSocket(r *gin.Engine, keypair []byte) *f.Server {
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
 	
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
@@ -23,9 +24,17 @@ func LoadWebSocket(r *gin.Engine, keypair any) *f.Server {
 	server.On(f.OnConnection, func(c *f.Channel) {
 		
 		fmt.Println("New client connected")
-		if len(c.Request().Cookies) > 0 {
-		
-		}
+		// if len(c.Request().Cookies()) > 0 {
+		// 	// cook, _ := c.Request().Cookie("Cookie")
+		// 	// var keypairs = [][]byte{keypair}
+			
+		// 	// codecs := securecookie.CodecsFromPairs(keypairs...)
+		// 	// var value =  map[string]any{}
+		// 	// fmt.Println(value == nil, codecs == nil)
+			
+		// 	// securecookie.DecodeMulti("mysession", cook.Value, &value, codecs...)
+			
+		// }
 
 		
 		
