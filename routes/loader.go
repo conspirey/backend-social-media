@@ -14,9 +14,9 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 		auth.Register(c, db)
 	})
 	auths.POST("/login", func(c *gin.Context) {
-		auth.Register(c, db)
+		auth.Login(c, db)
 	})
 	auths.POST("/logout", func(c *gin.Context) {
-		auth.Register(c, db)
+		auth.Logout(c, db)
 	})
 }

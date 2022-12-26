@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"main/structs"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +22,6 @@ func Register(c *gin.Context, db *mongo.Database) {
 		return
 	}
 	if !user.IsValidName() {
-		fmt.Println()
 		c.JSON(400, Error("Invalid username"))
 		return
 	}
@@ -34,6 +32,7 @@ func Register(c *gin.Context, db *mongo.Database) {
 	
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
 		c.JSON(400, Error(err.Error()))
+		return
 	}
 	c.JSON(200, Error("Created your account"))
 	

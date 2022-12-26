@@ -16,18 +16,18 @@ import (
 )
 const (
 	/*
-	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
-	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
-	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
-	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
-	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
+	jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
 	*/
-	key = "jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzLzm3ZByr$"
+	key = "jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL"
 	
 )
 var (
-	NAME_REGEX = regexp.MustCompile("`(?m)^[a-zA-Z0-9_]{3,16}$`")
-	PASSWORD_REGEX = regexp.MustCompile(`(?m)^.{8,32}$`)
+	NAME_REGEX = regexp.MustCompile("^[a-zA-Z0-9_]{3,16}$")
+	PASSWORD_REGEX = regexp.MustCompile(`^.{8,32}$`)
 )
 type User struct {
 	Name     string `json:"name"`
@@ -93,6 +93,7 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	user.Password = password
 	_, errs := user.EncryptPassword(true)
 	if errs != nil {
+		fmt.Println(errs)
 		return errors.New("Failed Account Creation: password could not be encrypted")
 	}
 	if !user.AccountExists(db) {
