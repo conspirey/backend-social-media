@@ -34,11 +34,16 @@ func Register(c *gin.Context, db *mongo.Database) {
 		c.JSON(400, Error(err.Error()))
 		return
 	}
-	c.JSON(200, Error("Created your account"))
+	c.JSON(200, Success("Created your account"))
 	
 }
 func Error(text string) gin.H {
 	return gin.H{
 		"error": text,
+	}
+}
+func Success(text string) gin.H {
+	return gin.H{
+		"success": text,
 	}
 }
