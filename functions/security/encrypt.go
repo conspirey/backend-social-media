@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -25,13 +26,18 @@ func Encrypt(stringToEncrypt , keyString string) (encryptedString string, errorS
 	}
 	cfb := cipher.NewCFBEncrypter(block, iv)
 	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(b))
-	return string(ciphertext), nil
+
+	return hex.EncodeToString(ciphertext), nil
 }
 
 // Decrypt decrypts the given ciphertext using the given key
 func Decrypt(encryptedString string, keyString string) (decryptedString string, errorS error) {
 	// Create a new cipher block
-	key, text := []byte(keyString), []byte(encryptedString)
+	ciphertextBytes, err := hex.DecodeString(encryptedString)
+	if err != nil {
+		return "", err
+	}
+	key, text := []byte(keyString), ciphertextBytes
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err

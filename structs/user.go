@@ -8,6 +8,7 @@ import (
 	"main/functions/security"
 	"main/functions/snowflake"
 	"regexp"
+	"strings"
 
 	// "github.com/gorilla/securecookie"
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,6 +30,8 @@ var (
 	NAME_REGEX = regexp.MustCompile("^[a-zA-Z0-9_]{3,16}$")
 	PASSWORD_REGEX = regexp.MustCompile(`^.{8,32}$`)
 )
+//DIsplayName feature
+
 type User struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
@@ -61,7 +64,7 @@ func (user *User) AccountExists(db *mongo.Database) (bool) {
 	_, errs := user.EncryptPassword(true)
 
 	data, _ := mongof.FindOne(bson.M{
-		"name": user.Name,
+		"name": strings.ToLower(user.Name),
 		"password": user.Password,
 	}, options.FindOne(), db, "user")
 	if data != nil {
@@ -78,7 +81,7 @@ func (user *User) FetchData(db *mongo.Database) (error) {
 		return errs
 	}
 	data, errsS := mongof.FindOne(bson.M{
-		"name": user.Name,
+		"name": strings.ToLower(user.Name),
 		"password": user.Password,
 	}, options.FindOne(), db, "user")
 	if errsS != nil {
@@ -101,6 +104,7 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 		if !user.ValidID() {
 			return errors.New("Failed Account Creation: Invalid id generated")
 		}
+		user.Name = strings.ToLower(user.Name)
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
 		if err != nil {
 			return errors.New("Failed Account Creation: Account could not be created")
