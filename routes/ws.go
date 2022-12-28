@@ -22,7 +22,6 @@ func LoadWebSocket(r *gin.Engine, keypair []byte) *f.Server {
 	//   })
 	
 	server.On(f.OnConnection, func(c *f.Channel) {
-		
 		fmt.Println("New client connected")
 		// if len(c.Request().Cookies()) > 0 {
 		// 	// cook, _ := c.Request().Cookie("Cookie")
