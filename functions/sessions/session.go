@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"main/functions/security"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/context"
@@ -28,13 +29,18 @@ type Options struct {
 	SameSite http.SameSite
 }
 
-func MiddleWare(name, EncrKey string) gin.HandlerFunc {
+func MiddleWare(name, EncrKey string, MaxAge int) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		s := &Session{
 			Name: name,
 			EncrKey: EncrKey,
+			Options: &Options{
+				MaxAge: MaxAge,
+				Path: "/",
+			},
+			Values: map[string]any{},
 		}
-		c.Set(defKey, s)
+		c.Set(defKey, *s)
 		defer context.Clear(c.Request)
 		c.Next()
 	}
@@ -53,41 +59,62 @@ type Session struct {
 	Name string
 	Written bool
 }
-func (s *Session) Set(c *gin.Context) any {
+func (s *Session) Set(key string, value any) any {
 	// c.Get()
-
+	s.Values[key] = value
 
 	s.Written = true
 	return ""
 }
-func (s *Session) Get(c *gin.Context) any {
-	// c.Get()
-	
-	return ""
+func (s *Session) Get(key string) any {
+	return s.Values[key]
 }
 /*
 
 */
-func (s *Session) GetDec(c *gin.Context) any {
+func GetDec(c *gin.Context) any {
 	// c.Get()
 	
 	return ""
 }
-func (s *Session) Save() error {
+func (s *Session) Save(c *gin.Context) error {
 	if s.Written {
-		
-		encoded, err :=security.Encrypt(fmt.Sprintf("%v", s.Values), s.EncrKey)
+		fmt.Println(fmt.Sprintf("%v", s.Values))
+		encoded, err := security.Encrypt(fmt.Sprint(s.Values), s.EncrKey)
 		if err != nil {
 			return err
 		}
-		http.SetCookie(s.C.Writer, NewCookie(s.Name, encoded, ))
+		c.Set(defKey, s)
+		http.SetCookie(c.Writer, NewCookie(s.Name, encoded, *s.Options))
 		s.Written = false
 	}
-}
-func NewCookie(name, value string, options Options) *http.Cookie {
 	return nil
 }
+func NewCookie(name, value string, options Options) *http.Cookie {
+	cookie := newCookieFromOptions(name, value, &options)
+	if options.MaxAge > 0 {
+		d := time.Duration(options.MaxAge) * time.Second
+		cookie.Expires = time.Now().Add(d)
+	} else if options.MaxAge < 0 {
+		// Set it to the past to expire now.
+		cookie.Expires = time.Unix(1, 0)
+	}
+	return cookie
+}
 
 
 
 
+func newCookieFromOptions(name, value string, options *Options) *http.Cookie {
+	return &http.Cookie{
+		Name:     name,
+		Value:    value,
+		Path:     options.Path,
+		Domain:   options.Domain,
+		MaxAge:   options.MaxAge,
+		Secure:   options.Secure,
+		HttpOnly: options.HttpOnly,
+		SameSite: options.SameSite,
+	}
+
+}

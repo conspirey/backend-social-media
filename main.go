@@ -46,11 +46,27 @@ func main() {
 
 
 
-	r.Use(mses.MiddleWare("user", keypair))
+	r.Use(mses.MiddleWare("user", keypair, 3600*48))
 
 
 
-	
+	r.GET("/test/set", func(c *gin.Context) {
+		session := mses.Default(c)
+		session.Set("user", map[string]any{
+			"name": "hello world!",
+		})
+		fmt.Println(session.Save(c))
+		c.JSON(200, session.Get("user"))
+	})
+	r.GET("/test/", func(c *gin.Context) {
+		session := mses.Default(c)
+		// session.Set("user", map[string]any{
+		// 	"name": "hello world!",
+		// })
+		// fmt.Println(session.Save(c))
+		c.JSON(200, session.Get("user"))
+	})
+
 	r.Static("/static", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
