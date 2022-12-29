@@ -11,7 +11,7 @@ import (
 	"time"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-
+	mses "main/functions/sessions"
 	//f "github.com/ambelovsky/gosf"
 	"github.com/gin-contrib/sessions/mongo/mongodriver"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -19,7 +19,7 @@ import (
 )
 var (
 	r = gin.Default();
-	keypair = []byte(functions.RandStringRunes(15))
+	keypair = functions.RandStringRunes(32)
 )
 
 func main() {
@@ -39,9 +39,18 @@ func main() {
 	
 	routes.LoadRoutes(r, db)
 	cs := db.Collection("sessions")
-	store := mongodriver.NewStore(cs, 3600*48, true, keypair) // change 3600 time how to: delete everything in mongodb collection
-	server := routes.LoadWebSocket(r, keypair)
+	store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
+	server := routes.LoadWebSocket(r, []byte(keypair))
 	r.Use(sessions.Sessions("mysession", store))
+
+
+
+
+	r.Use(mses.MiddleWare("user", keypair))
+
+
+
+	
 	r.Static("/static", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
