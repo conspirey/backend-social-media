@@ -15,6 +15,18 @@ import (
 func SetupCreateCollectionsAndStuffForMongoDB() {
 
 }
+func CollectionExists(colName string, db *mongo.Database) bool {
+	list, err := db.ListCollectionNames(context.TODO(), bson.M{})	
+	if err != nil {
+		return false
+	}
+	for _, v := range list {
+		if colName == v {
+			return false
+		}
+	}
+	return false
+}
 func UpdateByID(id interface{}, update interface{}, options *options.UpdateOptions, db *mongo.Database, collectionName string) (*mongo.UpdateResult, error) {
 	coll := db.Collection(collectionName)
 	result, err := coll.UpdateByID(context.TODO(), id, update, options)

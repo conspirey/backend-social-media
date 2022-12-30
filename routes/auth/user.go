@@ -2,7 +2,7 @@ package auth
 
 import (
 	"main/structs"
-
+	mses "main/functions/sessions"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -29,10 +29,15 @@ func Register(c *gin.Context, db *mongo.Database) {
 		c.JSON(400, Error("Invalid password, it should be 8-32 in length"))
 		return
 	}
-	
+	session := mses.Default(c)
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
 		c.JSON(400, Error(err.Error()))
 		return
+	}
+	session.Set("user", user.ToMap())
+	err := session.Save(c)
+	if err != nil {
+		c.JSON(400, Error("couldn't set session, but account is created"))
 	}
 	c.JSON(200, Success("Created your account"))
 	

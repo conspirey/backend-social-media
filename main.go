@@ -9,9 +9,13 @@ import (
 	"main/routes"
 	"net/http"
 	"time"
+
 	// "github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
+	mongof "main/functions/mongo"
 	mses "main/functions/sessions"
+
+	"github.com/gin-gonic/gin"
+
 	//f "github.com/ambelovsky/gosf"
 	// "github.com/gin-contrib/sessions/mongo/mongodriver"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -36,7 +40,9 @@ func main() {
     	log.Fatal(err)
 	}
 	db := client.Database("conspir")
-	
+	if !mongof.CollectionExists("user", db) {
+		db.CreateCollection(context.TODO(), "user")
+	}
 	routes.LoadRoutes(r, db)
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
