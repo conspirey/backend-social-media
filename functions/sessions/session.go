@@ -1,7 +1,7 @@
 package sessions
 
 import (
-	"fmt"
+	"main/functions"
 	"main/functions/security"
 	"net/http"
 	"time"
@@ -31,6 +31,7 @@ type Options struct {
 
 func MiddleWare(name, EncrKey string, MaxAge int) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		
 		s := &Session{
 			Name: name,
 			EncrKey: EncrKey,
@@ -39,6 +40,14 @@ func MiddleWare(name, EncrKey string, MaxAge int) gin.HandlerFunc {
 				Path: "/",
 			},
 			Values: map[string]any{},
+		}
+		str, err := c.Cookie(s.Name)
+		if err == nil {
+			strD, err := security.Decrypt(str, EncrKey)
+			if err == nil {
+				s.Values = functions.StringToValue[map[string]any](strD)
+			}
+			// s.Values = security.Decrypt()
 		}
 		c.Set(defKey, *s)
 		defer context.Clear(c.Request)
@@ -72,15 +81,15 @@ func (s *Session) Get(key string) any {
 /*
 
 */
-func GetDec(c *gin.Context) any {
-	// c.Get()
-	
-	return ""
+func GetDec(cookie, EncrKey string) (string, error) {
+	return security.Decrypt(cookie, EncrKey)
+}
+func (s *Session) ValuesToString() string {
+	return functions.MapToJSON(s.Values)
 }
 func (s *Session) Save(c *gin.Context) error {
 	if s.Written {
-		fmt.Println(fmt.Sprintf("%v", s.Values))
-		encoded, err := security.Encrypt(fmt.Sprint(s.Values), s.EncrKey)
+		encoded, err := security.Encrypt(s.ValuesToString(), s.EncrKey)
 		if err != nil {
 			return err
 		}

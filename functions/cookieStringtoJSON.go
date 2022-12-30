@@ -23,3 +23,21 @@ func Testing() {
 	}
 	ConvertCookieValueToJSON(cookie);
 }
+
+func StringToValue[T any](val string) T {
+	sec := new(T)
+    if err := json.Unmarshal([]byte(val), &sec); err != nil {
+        panic(err)
+    }
+	return *sec
+
+}
+//Type needs to be map[T]T for this to work
+func MapToJSON[T any](val T) string {
+    jsonStr, err := json.Marshal(val)
+    if err != nil {
+        fmt.Printf("Error: %s", err.Error())
+    }
+	return string(jsonStr)
+
+}
