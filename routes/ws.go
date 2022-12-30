@@ -2,7 +2,8 @@ package routes
 
 import (
 	"fmt"
-
+	mses "main/functions/sessions"
+	"main/functions"
 	"github.com/gin-gonic/gin"
 	// "github.com/gorilla/securecookie"
 
@@ -12,7 +13,7 @@ import (
 type Echo struct {
 	Text string `json:"text"`
 }
-func LoadWebSocket(r *gin.Engine, keypair []byte) *f.Server {
+func LoadWebSocket(r *gin.Engine, EncrKey string) *f.Server {
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
 	
 	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
@@ -23,37 +24,22 @@ func LoadWebSocket(r *gin.Engine, keypair []byte) *f.Server {
 	
 	server.On(f.OnConnection, func(c *f.Channel) {
 		fmt.Println("New client connected")
-		// if len(c.Request().Cookies()) > 0 {
-		// 	// cook, _ := c.Request().Cookie("Cookie")
-		// 	// var keypairs = [][]byte{keypair}
-			
-		// 	// codecs := securecookie.CodecsFromPairs(keypairs...)
-		// 	// var value =  map[string]any{}
-		// 	// fmt.Println(value == nil, codecs == nil)
-			
-		// 	// securecookie.DecodeMulti("mysession", cook.Value, &value, codecs...)
-			
-		// }
 
-		
-		
-		
- 		
-		// session.Set("user", map[string]any{
-		// 	"password": "123",
-		// 	"name": "mrredo",
-		// })
-		// fmt.Println(session.Save())
-		//join them to room
 		c.Join("chat")
 
 		
 	})
 	server.On("echo", func(c *f.Channel, msg Echo) any {
 		//send event to all in room
-		// server.BroadcastTo("chat", "echo", map[string]interface{}{
-		// 	"text": "hello",
-		// })
+
+		cookie, err := c.Request().Cookie("user")
+		if err == nil {
+			str, _ := mses.GetDec(cookie.Value, EncrKey)
+			data := functions.StringToValue[map[string]any](str)
+			
+			fmt.Println(data["user"].(map[string]any)["name"])
+		}
+		
 		server.BroadcastTo("chat", "echo", map[string]interface{}{
 					"text": msg.Text,
 				})
