@@ -57,22 +57,7 @@ func (user *User) DecryptPassword(changeSTR bool) (string, error) {
 	}
 	return pass, err
 }
-func (user *User) DecryptIP(changeSTR bool) (string, error) {
-	ip, err := security.Decrypt(user.IP, key)
-	if changeSTR {
-		user.IP = ip
-	}
-	return ip, err
-}
-func (user *User) EncryptIP(changeSTR bool) (string, error) {
-	
-	ip, err := security.Encrypt(user.IP, key)
-	fmt.Println(user.IP, "efwefwef", ip)
-	if changeSTR {
-		user.IP = ip
-	}
-	return ip, err
-}
+
 func (user *User) EncryptPassword(changeSTR bool) (string, error) {
 	pass, err := security.Encrypt(user.Password, key)
 	if changeSTR {
@@ -96,10 +81,7 @@ func (user *User) AccountExists(db *mongo.Database) (bool) {
 	return false
 }
 func (user *User) IPExists(db *mongo.Database) bool {
-	fmt.Println(user.IP, 10)
-	user.DecryptIP(true)
-	fmt.Println(user.IP, 10)
-	user.EncryptIP(true)
+	
 	b, _ := mongof.FindOne(bson.M{
 		"ip": user.IP,	
 	}, options.FindOne(), db, "user")
@@ -134,9 +116,6 @@ func (user *User) FetchData(db *mongo.Database) (error) {
 	user.MapToUser(data)
 	_, err := user.DecryptPassword(true)
 	
-	if _, errs := user.DecryptIP(true); errs != nil { 
-		return errs
-	}
 	return err
 }
 func (user *User) RegisterAccount(username, password string, db *mongo.Database) (error) {
@@ -160,7 +139,6 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 		}
 		user.Name = strings.ToLower(user.Name)
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
-		fmt.Println(user.ToMap(), 101010)
 		if err != nil {
 			return errors.New("Failed Account Creation: Account could not be created")
 		}
