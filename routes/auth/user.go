@@ -21,6 +21,7 @@ func Register(c *gin.Context, db *mongo.Database) {
 		})
 		return
 	}
+	
 	if !user.IsValidName() {
 		c.JSON(400, Error("Invalid username"))
 		return
@@ -29,6 +30,7 @@ func Register(c *gin.Context, db *mongo.Database) {
 		c.JSON(400, Error("Invalid password, it should be 8-32 in length"))
 		return
 	}
+	user.SetIP(c.ClientIP())
 	session := mses.Default(c)
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
 		c.JSON(400, Error(err.Error()))

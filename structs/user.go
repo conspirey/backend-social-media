@@ -36,6 +36,10 @@ type User struct {
 	Name     string `json:"name"`
 	Password string `json:"password"`
 	ID string `json:"id"`
+	IP string `json:"ip"`
+}
+func (user *User) SetIP(ip string) {
+	user.IP = strings.Split(ip, ":")[0]
 }
 func (user *User) Key() string {
 	return key
@@ -53,6 +57,22 @@ func (user *User) DecryptPassword(changeSTR bool) (string, error) {
 	}
 	return pass, err
 }
+func (user *User) DecryptIP(changeSTR bool) (string, error) {
+	ip, err := security.Decrypt(user.IP, key)
+	if changeSTR {
+		user.IP = ip
+	}
+	return ip, err
+}
+func (user *User) EncryptIP(changeSTR bool) (string, error) {
+	
+	ip, err := security.Encrypt(user.IP, key)
+	fmt.Println(user.IP, "efwefwef", ip)
+	if changeSTR {
+		user.IP = ip
+	}
+	return ip, err
+}
 func (user *User) EncryptPassword(changeSTR bool) (string, error) {
 	pass, err := security.Encrypt(user.Password, key)
 	if changeSTR {
@@ -62,21 +82,45 @@ func (user *User) EncryptPassword(changeSTR bool) (string, error) {
 }
 func (user *User) AccountExists(db *mongo.Database) (bool) {
 	_, errs := user.EncryptPassword(true)
-
+	// _, errsIP := user.EncryptIP(true)
 	data, _ := mongof.FindOne(bson.M{
 		"name": strings.ToLower(user.Name),
-		"password": user.Password,
+		// "password": user.Password,
 	}, options.FindOne(), db, "user")
 	if data != nil {
 		return true
 	}
-	if errs != nil {
+	if errs != nil /*|| errsIP !=nil*/  {
 		return false
+	}
+	return false
+}
+func (user *User) IPExists(db *mongo.Database) bool {
+	fmt.Println(user.IP, 10)
+	user.DecryptIP(true)
+	fmt.Println(user.IP, 10)
+	user.EncryptIP(true)
+	b, _ := mongof.FindOne(bson.M{
+		"ip": user.IP,	
+	}, options.FindOne(), db, "user")
+	// fmt.Println(b, user.IP)
+	if len(b) > 0 {
+		return true
+	}
+	return false
+}
+func (user *User) NameExists(db *mongo.Database) bool {
+	b, _ := mongof.FindOne(bson.M{
+		"name": strings.ToLower(user.Name),
+	}, options.FindOne(), db, "user")
+	if len(b) > 0 {
+		return true
 	}
 	return false
 }
 func (user *User) FetchData(db *mongo.Database) (error) {
 	_, errs := user.EncryptPassword(true)
+	
 	if errs != nil {
 		return errs
 	}
@@ -89,15 +133,25 @@ func (user *User) FetchData(db *mongo.Database) (error) {
 	}
 	user.MapToUser(data)
 	_, err := user.DecryptPassword(true)
+	
+	if _, errs := user.DecryptIP(true); errs != nil { 
+		return errs
+	}
 	return err
 }
 func (user *User) RegisterAccount(username, password string, db *mongo.Database) (error) {
 	user.Name = username
 	user.Password = password
-	_, errs := user.EncryptPassword(true)
-	if errs != nil {
-		fmt.Println(errs)
-		return errors.New("Failed Account Creation: password could not be encrypted")
+	
+	// _, errs := user.EncryptPassword(true)
+	// if errs != nil {
+	// 	return errors.New("Failed Account Creation: password could not be encrypted")
+	// }
+	if user.IPExists(db) {
+		return errors.New("Failed Account Creation: 1 account per IP")
+	}
+	if user.NameExists(db) {
+		return errors.New("Failed Account Creation: name already exists")
 	}
 	if !user.AccountExists(db) {
 		user.ID = user.CreateID()
@@ -106,6 +160,7 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 		}
 		user.Name = strings.ToLower(user.Name)
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
+		fmt.Println(user.ToMap(), 101010)
 		if err != nil {
 			return errors.New("Failed Account Creation: Account could not be created")
 		}

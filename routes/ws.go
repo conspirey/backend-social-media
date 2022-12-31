@@ -29,9 +29,10 @@ func LoadWebSocket(r *gin.Engine, EncrKey string) *f.Server {
 
 		
 	})
+	
 	server.On("echo", func(c *f.Channel, msg Echo) any {
 		//send event to all in room
-
+		fmt.Println(c.Ip())
 		cookie, err := c.Request().Cookie("user")
 		if err == nil {
 			str, _ := mses.GetDec(cookie.Value, EncrKey)

@@ -43,19 +43,19 @@ func main() {
 	if !mongof.CollectionExists("user", db) {
 		db.CreateCollection(context.TODO(), "user")
 	}
-	routes.LoadRoutes(r, db)
+	r.Use(mses.MiddleWare("user", keypair, 3600*48))
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
-	server := routes.LoadWebSocket(r, keypair)
+	
 	// r.Use(sessions.Sessions("mysession", store))
 
 
 
 
-	r.Use(mses.MiddleWare("user", keypair, 3600*48))
+	
 
-
-
+	server := routes.LoadWebSocket(r, keypair)
+	routes.LoadRoutes(r, db)
 	r.GET("/test/set", func(c *gin.Context) {
 		session := mses.Default(c)
 		session.Set("user", map[string]any{
