@@ -127,24 +127,30 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	// 	return errors.New("Failed Account Creation: password could not be encrypted")
 	// }
 	if user.IPExists(db) {
-		return errors.New("Failed Account Creation: 1 account per IP")
+		return errors.New("1 account per IP : invalid_ip_3")
 	}
 	if user.NameExists(db) {
-		return errors.New("Failed Account Creation: name already exists")
+		return errors.New("name already exists : name_exists_1 ")
+	}
+	if user.IsValidName() {
+		return errors.New("name is invalid : invalid_name_1 ")
+	}
+	if user.IsValidPass() {
+		return errors.New("password is invalid : invalid_pass_2 ")
 	}
 	if !user.AccountExists(db) {
 		user.ID = user.CreateID()
 		if !user.ValidID() {
-			return errors.New("Failed Account Creation: Invalid id generated")
+			return errors.New("Invalid id generated : invalid_id_4")
 		}
 		user.Name = strings.ToLower(user.Name)
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
 		if err != nil {
-			return errors.New("Failed Account Creation: Account could not be created")
+			return errors.New("Account could not be created : failed_account_4")
 		}
 		
 	} else {
-		return errors.New("Failed Account Creation: Account already exists")
+		return errors.New("Account already exists : account_exists_4")
 	}
 	return nil
 }

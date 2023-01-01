@@ -1,8 +1,10 @@
 package auth
 
 import (
-	"main/structs"
 	mses "main/functions/sessions"
+	"main/structs"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -17,36 +19,34 @@ func Register(c *gin.Context, db *mongo.Database) {
 	var user structs.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(400, gin.H{
-			"error": "invalid json provided",
+			"error_message": "invalid json provided",
+			"error": "invalid_json",
 		})
 		return
 	}
 	
-	if !user.IsValidName() {
-		c.JSON(400, Error("Invalid username"))
-		return
-	}
-	if !user.IsValidPass() {
-		c.JSON(400, Error("Invalid password, it should be 8-32 in length"))
-		return
-	}
 	user.SetIP(c.ClientIP())
 	session := mses.Default(c)
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
-		c.JSON(400, Error(err.Error()))
+		c.JSON(400, Error(err.Error(), ErrSep(err.Error())))
 		return
 	}
 	session.Set("user", user.ToMap())
 	err := session.Save(c)
 	if err != nil {
-		c.JSON(400, Error("couldn't set session, but account is created"))
+		c.JSON(400, Error("couldn't set session, but account is created", "session_not_set"))
 	}
 	c.JSON(200, Success("Created your account"))
 	
 }
-func Error(text string) gin.H {
+func ErrSep(text string) string {
+	t :=  strings.Split(text, ":")
+	return t[len(t) - 1]
+}
+func Error(text string, err string) gin.H {
 	return gin.H{
-		"error": text,
+		"error": err,
+		"error_message": text,
 	}
 }
 func Success(text string) gin.H {
