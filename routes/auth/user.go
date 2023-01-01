@@ -16,30 +16,30 @@ func Logout(c *gin.Context, db *mongo.Database) {
 func Register(c *gin.Context, db *mongo.Database) {
 	var user structs.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{
+		c.JSON(422, gin.H{
 			"error": "invalid json provided",
 		})
 		return
 	}
 	
 	if !user.IsValidName() {
-		c.JSON(400, Error("Invalid username"))
+		c.JSON(422, Error("Invalid username"))
 		return
 	}
 	if !user.IsValidPass() {
-		c.JSON(400, Error("Invalid password, it should be 8-32 in length"))
+		c.JSON(422, Error("Invalid password, it should be 8-32 in length"))
 		return
 	}
 	user.SetIP(c.ClientIP())
 	session := mses.Default(c)
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
-		c.JSON(400, Error(err.Error()))
+		c.JSON(422, Error(err.Error()))
 		return
 	}
 	session.Set("user", user.ToMap())
 	err := session.Save(c)
 	if err != nil {
-		c.JSON(400, Error("couldn't set session, but account is created"))
+		c.JSON(422, Error("couldn't set session, but account is created"))
 	}
 	c.JSON(200, Success("Created your account"))
 	
