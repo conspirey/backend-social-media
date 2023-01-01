@@ -29,12 +29,14 @@ func Register(c *gin.Context, db *mongo.Database) {
 	session := mses.Default(c)
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
 		c.JSON(400, Error(err.Error(), ErrSep(err.Error())))
+
 		return
 	}
 	session.Set("user", user.ToMap())
 	err := session.Save(c)
 	if err != nil {
 		c.JSON(400, Error("couldn't set session, but account is created", "session_not_set"))
+
 	}
 	c.JSON(200, Success("Created your account"))
 	
