@@ -46,8 +46,8 @@ func main() {
 	r.Use(cors.New(cors.Config{
 		//AllowAllOrigins: true,
 		AllowOrigins: []string{"http://localhost:5173"},
-		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "PUT"},
-		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,
 		
 	}))
@@ -68,7 +68,10 @@ func main() {
 		fmt.Println(session.Save(c))
 		c.JSON(200, session.Get("user"))
 	})
-	r.GET("/test/", func(c *gin.Context) {
+	r.GET("/e", func(c *gin.Context) {
+		c.JSON(200, gin.H{ "name": "mrredo"})
+	})
+	r.GET("/test", func(c *gin.Context) {
 		session := mses.Default(c)
 		// session.Set("user", map[string]any{
 		// 	"name": "hello world!",
