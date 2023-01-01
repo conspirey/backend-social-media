@@ -13,7 +13,7 @@ import (
 	// "github.com/gin-contrib/sessions"
 	mongof "main/functions/mongo"
 	mses "main/functions/sessions"
-
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	//f "github.com/ambelovsky/gosf"
@@ -43,6 +43,14 @@ func main() {
 	if !mongof.CollectionExists("user", db) {
 		db.CreateCollection(context.TODO(), "user")
 	}
+	r.Use(cors.New(cors.Config{
+		//AllowAllOrigins: true,
+		AllowOrigins: []string{"http://localhost:5173"},
+		AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "PUT"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
+		AllowCredentials: true,
+		
+	}))
 	r.Use(mses.MiddleWare("user", keypair, 3600*48))
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
@@ -50,13 +58,9 @@ func main() {
 	// r.Use(sessions.Sessions("mysession", store))
 
 
-
-
-	
-
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
-	r.GET("/test/set", func(c *gin.Context) {
+	r.GET("/test/set/", func(c *gin.Context) {
 		session := mses.Default(c)
 		session.Set("user", map[string]any{
 			"name": "hello world!",
@@ -73,7 +77,7 @@ func main() {
 		c.JSON(200, session.Get("user"))
 	})
 
-	r.Static("/static", "./static")
+	r.Static("/static/", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
 	})
@@ -83,7 +87,7 @@ func main() {
 
 
 
-	r.Run("localhost:8080")
+	r.Run("localhost:3200")
 
 	//defer f.Shutdown()
 }

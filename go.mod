@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/ambelovsky/gosf-socketio v0.0.0-20220810204405-0f97832ec7af
 	github.com/dchest/uniuri v1.2.0
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.8.2
 	github.com/gorilla/context v1.1.1

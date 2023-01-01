@@ -132,10 +132,10 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	if user.NameExists(db) {
 		return errors.New("name already exists : name_exists_1 ")
 	}
-	if user.IsValidName() {
+	if !user.IsValidName() {
 		return errors.New("name is invalid : invalid_name_1 ")
 	}
-	if user.IsValidPass() {
+	if !user.IsValidPass() {
 		return errors.New("password is invalid : invalid_pass_2 ")
 	}
 	if !user.AccountExists(db) {
