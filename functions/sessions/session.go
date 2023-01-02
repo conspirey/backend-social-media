@@ -29,7 +29,7 @@ type Options struct {
 	SameSite http.SameSite
 }
 
-func MiddleWare(name, EncrKey string, MaxAge int) gin.HandlerFunc {
+func MiddleWare(name, EncrKey string, MaxAge int, Domain, Path string, HTTPOnly, secure bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		
 		s := &Session{
@@ -37,7 +37,12 @@ func MiddleWare(name, EncrKey string, MaxAge int) gin.HandlerFunc {
 			EncrKey: EncrKey,
 			Options: &Options{
 				MaxAge: MaxAge,
-				Path: "/",
+				Path: Path,
+				Domain: Domain,
+				HttpOnly: HTTPOnly,
+				Secure: secure,
+
+
 			},
 			Values: map[string]any{},
 		}

@@ -25,12 +25,13 @@ func Register(c *gin.Context, db *mongo.Database) {
 		return
 	}
 	user.SetIP(c.ClientIP())
-	session := mses.Default(c)
+	
 	if err := user.RegisterAccount(user.Name, user.Password, db); err != nil {
 		c.JSON(400, Error(err.Error(), ErrSep(err.Error())))
 
 		return
 	}
+	session := mses.Default(c)
 	session.Set("user", user.ToMap())
 	err := session.Save(c)
 	if err != nil {

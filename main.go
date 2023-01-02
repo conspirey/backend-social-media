@@ -51,7 +51,7 @@ func main() {
 		AllowCredentials: true,
 		
 	}))
-	r.Use(mses.MiddleWare("user", keypair, 3600*48))
+	r.Use(mses.MiddleWare("user", keypair, 3600*48, "", "/", true, true))
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
 	
