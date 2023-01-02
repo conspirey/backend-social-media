@@ -93,8 +93,10 @@ func (s *Session) Save(c *gin.Context) error {
 		if err != nil {
 			return err
 		}
-		c.Set(defKey, s)
-		http.SetCookie(c.Writer, NewCookie(s.Name, encoded, *s.Options))
+		c.Set(defKey, *s)
+
+		c.SetCookie(s.Name, encoded, s.Options.MaxAge, s.Options.Path, s.Options.Domain, s.Options.Secure, s.Options.HttpOnly)
+		
 		s.Written = false
 	}
 	return nil

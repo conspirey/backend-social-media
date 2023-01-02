@@ -4,7 +4,7 @@ import (
 	mses "main/functions/sessions"
 	"main/structs"
 	"strings"
-
+ 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -35,7 +35,7 @@ func Register(c *gin.Context, db *mongo.Database) {
 	err := session.Save(c)
 	if err != nil {
 		c.JSON(400, Error("couldn't set session, but account is created", "session_not_set"))
-
+		return
 	}
 	c.JSON(200, Success("Created your account"))
 	
