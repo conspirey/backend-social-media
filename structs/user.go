@@ -34,9 +34,9 @@ var (
 
 type User struct {
 	Name     string `json:"name"`
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
 	ID string `json:"id"`
-	IP string `json:"ip"`
+	IP string `json:"ip,omitempty"`
 }
 func (user *User) SetIP(ip string) {
 	user.IP = strings.Split(ip, ":")[0]
@@ -189,3 +189,17 @@ func (user *User) ToMap() map[string]any {
 	}
 	return UMap
 }
+func (user *User) ToMapCookie() map[string]any {
+	user.Password = ""
+	user.IP = ""
+	by, err := json.Marshal(user)
+	if err != nil {
+		panic(err)
+	}
+	UMap := map[string]any{}
+	if err := json.Unmarshal(by, &UMap); err != nil {
+		panic(err)
+	}
+	return UMap
+}
+

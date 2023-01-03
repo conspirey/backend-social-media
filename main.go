@@ -68,10 +68,7 @@ func main() {
 		fmt.Println(session.Save(c))
 		c.JSON(200, session.Get("user"))
 	})
-	r.GET("/e", func(c *gin.Context) {
-		ses := mses.Default(c)
-		c.JSON(200, ses.Get("user"))
-	})
+
 	r.GET("/test", func(c *gin.Context) {
 		session := mses.Default(c)
 		// session.Set("user", map[string]any{

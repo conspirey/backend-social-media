@@ -94,6 +94,7 @@ func (s *Session) ValuesToString() string {
 }
 func (s *Session) Save(c *gin.Context) error {
 	if s.Written {
+		c.Header("Access-Control-Expose-Headers", "Set-Cookie")
 		encoded, err := security.Encrypt(s.ValuesToString(), s.EncrKey)
 		if err != nil {
 			return err
