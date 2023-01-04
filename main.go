@@ -77,18 +77,7 @@ func main() {
 		// fmt.Println(session.Save(c))
 		c.JSON(200, session.Get("user"))
 	})
-r.GET("/ee", func(c *gin.Context) {
-	session := mses.Default(c)
-	c.JSON(200, session.Get("user"))
-})
-r.POST("/ee", func(c *gin.Context) {
-	session := mses.Default(c)
-	session.Set("user", map[string]any{
-		"name": "hello world!",
-	})
-	fmt.Println(session.Save(c))
-	c.JSON(200, "Done")
-})
+
 	r.Static("/static/", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
