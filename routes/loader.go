@@ -16,9 +16,9 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 	auths.POST("/register", func(c *gin.Context) {
 		auth.Register(c, db)
 	})
-	r.POST("/cook", func(c *gin.Context) {
+	r.POST("/cookie", func(c *gin.Context) {
 		data, _ := security.Encrypt("{\"name\": \"Hello World!\"}", "1234567890123456")
-		c.Header("Set-Cookie", data)
+		cookie.SetHeaderCookie(data, c)
 		c.JSON(200, "make request to /cookie GET")
 		// c.Redirect(307, "/cookie")
 	})
