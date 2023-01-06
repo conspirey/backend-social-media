@@ -60,10 +60,10 @@ func main() {
 
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
-	r.GET("/test/set/", func(c *gin.Context) {
+	r.POST("/test/", func(c *gin.Context) {
 		session := mses.Default(c)
 		session.Set("user", map[string]any{
-			"name": "hello world!",
+			"name": "egegergre",
 		})
 		fmt.Println(session.Save(c))
 		c.JSON(200, session.Get("user"))
