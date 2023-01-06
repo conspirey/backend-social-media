@@ -22,6 +22,7 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 		c.JSON(200, "make request to /cookie GET")
 		// c.Redirect(307, "/cookie")
 	})
+
 	r.GET("/cookie", func(c *gin.Context) {
 		cookie.Cookie(c)
 		// session := sessions.Default(c)
@@ -38,5 +39,10 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 	})
 	auths.POST("/logout", func(c *gin.Context) {
 		auth.Logout(c, db)
+	})
+	sub := r.Group("hello.")
+	sub.GET("/", func(c *gin.Context) {
+		subdomain := c.Param("subdomain")
+		c.String(200, "Welcome to subdomain: " + subdomain)
 	})
 }

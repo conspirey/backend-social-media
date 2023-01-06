@@ -44,14 +44,14 @@ func main() {
 		db.CreateCollection(context.TODO(), "user")
 	}
 	r.Use(cors.New(cors.Config{
-		//AllowAllOrigins: true,
-		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000"},
+		// AllowAllOrigins: true,
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173"},
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,
 		
 	}))
-	r.Use(mses.MiddleWare("user", keypair, 3600*48, "", "/", true, true))
+	r.Use(mses.MiddleWare("user", keypair, 3600*48, "", "/", false, false, http.SameSiteNoneMode))
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
 	
@@ -63,7 +63,7 @@ func main() {
 	r.POST("/test/", func(c *gin.Context) {
 		session := mses.Default(c)
 		session.Set("user", map[string]any{
-			"name": "egegergre",
+			"name": "egegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergre",
 		})
 		fmt.Println(session.Save(c))
 		c.JSON(200, session.Get("user"))
