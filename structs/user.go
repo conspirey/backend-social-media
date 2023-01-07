@@ -125,7 +125,9 @@ func (user *User) Login(username, password string, db *mongo.Database) error {
 	if password == "" {
 		return NewErr("password is empty", "empty_password_2")
 	}
-	user.DecryptPassword(true)
+	if _, err := user.DecryptPassword(true); err != nil {
+		return NewErr("failed decrypting password", "depcr_failed_4")
+	}
 	if password != user.Password {
 		return NewErr("password is not correct", "incorrect_password_2")
 	}
