@@ -13,16 +13,22 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 	auths := r.Group("/auth/")
 	api := r.Group("/api/")
 	api.GET("/user", auth.GetUserData)
-	auths.POST("/register", func(c *gin.Context) {
+	r.POST("auth/register", func(c *gin.Context) {
 		auth.Register(c, db)
 	})
+	//REMOVE THIS SOON
+	//REMOVE THIS SOON
+	//REMOVE THIS SOON
 	r.POST("/cookie", func(c *gin.Context) {
 		data, _ := security.Encrypt("{\"name\": \"Hello World!\"}", "1234567890123456")
 		cookie.SetHeaderCookie(data, c)
 		c.JSON(200, "make request to /cookie GET")
 		// c.Redirect(307, "/cookie")
 	})
+	//REMOVE THIS SOON
+	//REMOVE THIS SOON
 
+//REMOVE THIS SOON
 	r.GET("/cookie", func(c *gin.Context) {
 		cookie.Cookie(c)
 		// session := sessions.Default(c)
@@ -40,9 +46,5 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 	auths.POST("/logout", func(c *gin.Context) {
 		auth.Logout(c, db)
 	})
-	sub := r.Group("hello.")
-	sub.GET("/", func(c *gin.Context) {
-		subdomain := c.Param("subdomain")
-		c.String(200, "Welcome to subdomain: " + subdomain)
-	})
+
 }

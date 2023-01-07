@@ -3,16 +3,18 @@ package main
 import (
 	"context"
 	"encoding/gob"
-	"fmt"
+	// "fmt"
 	"log"
 	"main/functions"
 	"main/routes"
+	"main/routes/auth"
 	"net/http"
 	"time"
 
 	// "github.com/gin-contrib/sessions"
 	mongof "main/functions/mongo"
 	mses "main/functions/sessions"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
@@ -61,12 +63,13 @@ func main() {
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
 	r.POST("/test/", func(c *gin.Context) {
-		session := mses.Default(c)
-		session.Set("user", map[string]any{
-			"name": "egegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergre",
-		})
-		fmt.Println(session.Save(c))
-		c.JSON(200, session.Get("user"))
+		auth.Register(c, db)
+		// session := mses.Default(c)
+		// session.Set("user", map[string]any{
+		// 	"name": "egegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergre",
+		// })
+		// fmt.Println(session.Save(c))
+		// c.JSON(200, session.Get("user"))
 	})
 
 	r.GET("/test", func(c *gin.Context) {

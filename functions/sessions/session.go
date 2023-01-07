@@ -120,8 +120,15 @@ func NewCookie(name, value string, options Options) *http.Cookie {
 	return cookie
 }
 
-
-
+func (s *Session) Delete(key string) {
+	delete(s.Values, key)
+	s.Written = true
+}
+func (s *Session) Clear() {
+	for key := range s.Values {
+		s.Delete(key)
+	}
+}
 
 func newCookieFromOptions(name, value string, options *Options) *http.Cookie {
 	return &http.Cookie{

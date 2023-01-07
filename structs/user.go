@@ -89,19 +89,14 @@ func (user *User) IPExists(db *mongo.Database) bool {
 		"ip": user.IP,
 	}, options.FindOne(), db, "user")
 	// fmt.Println(b, user.IP)
-	if len(b) > 0 {
-		return true
-	}
-	return false
+
+	return len(b) > 0
 }
 func (user *User) NameExists(db *mongo.Database) bool {
 	b, _ := mongof.FindOne(bson.M{
 		"name": strings.ToLower(user.Name),
 	}, options.FindOne(), db, "user")
-	if len(b) > 0 {
-		return true
-	}
-	return false
+	return len(b) > 0
 }
 func (user *User) FetchData(db *mongo.Database) error {
 	_, errs := user.EncryptPassword(true)
@@ -120,6 +115,21 @@ func (user *User) FetchData(db *mongo.Database) error {
 	_, err := user.DecryptPassword(true)
 
 	return err
+}
+func (user *User) Login(username, password string, db *mongo.Database) error {
+	userM, _ := mongof.FindOne(bson.M{}, options.FindOne(), db, "user")
+	user.MapToUser(userM)
+	if user.Name == "" {
+		return NewErr("name is invalid", "invalid_name_1")
+	}
+	if password == "" {
+		return NewErr("password is empty", "empty_password_2")
+	}
+	user.DecryptPassword(true)
+	if password != user.Password {
+		return NewErr("password is not correct", "incorrect_password_2")
+	}
+	return nil
 }
 func (user *User) RegisterAccount(username, password string, db *mongo.Database) error {
 	user.Name = username
@@ -144,16 +154,17 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	if !user.AccountExists(db) {
 		user.ID = user.CreateID()
 		if !user.ValidID() {
-			return errors.New("Invalid id generated : invalid_id_4")
+			return errors.New("invalid id generated : invalid_id_4")
 		}
 		user.Name = strings.ToLower(user.Name)
 		_, err := mongof.InsertOne(user.ToMap(), options.InsertOne(), db, "user")
 		if err != nil {
-			return errors.New("Account could not be created : failed_account_4")
+			return errors.New("account could not be created : failed_account_4")
 		}
 
 	} else {
-		return errors.New("Account already exists : account_exists_4")
+		return NewErr("account already exists", "account_exists_4")
+		// errors.New()
 	}
 	return nil
 }
@@ -204,4 +215,7 @@ func (user *User) ToMapCookie() map[string]any {
 		panic(err)
 	}
 	return UMap
+}
+func NewErr(text, err string) error {
+	return fmt.Errorf("%s : %s", text, err)
 }
