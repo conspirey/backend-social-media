@@ -1,10 +1,11 @@
 package auth
 
 import (
+	"fmt"
 	mses "main/functions/sessions"
 	"main/structs"
 	"strings"
- 
+
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -23,16 +24,23 @@ func Login(c *gin.Context, db *mongo.Database) {
 		return
 	}
 	session := mses.Default(c)
+	fmt.Println(user)
 	session.Set("user", user.ToMapCookie())
 	err := session.Save(c)
 	if err != nil {
-		c.JSON(400, Error("couldn't set session, login again", "session_not_set"))
+		c.JSON(400, Error("couldn't set session, login again", "session_not_set_3"))
 		return
 	}
 	c.JSON(200, Success("succesfully logged in"))
 }
 func Logout(c *gin.Context, db *mongo.Database) {
-	
+	session := mses.Default(c)
+	session.Clear()
+	if err := session.Save(c); err != nil {
+		c.JSON(400, Error("failed saving session data", "failed_saving_session_3"))
+		return
+	}
+	c.JSON(200, Success("logged out"))
 }
 func Register(c *gin.Context, db *mongo.Database) {
 	var user structs.User

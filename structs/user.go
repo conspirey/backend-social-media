@@ -117,20 +117,25 @@ func (user *User) FetchData(db *mongo.Database) error {
 	return err
 }
 func (user *User) Login(username, password string, db *mongo.Database) error {
-	userM, _ := mongof.FindOne(bson.M{}, options.FindOne(), db, "user")
-	user.MapToUser(userM)
-	if user.Name == "" {
+	userM, _ := mongof.FindOne(bson.M{
+		"name": strings.ToLower(username),
+	}, options.FindOne(), db, "user")
+	userMap := User{}
+	userMap.MapToUser(userM)
+	fmt.Println(username, password, user)
+	if userMap.Name == "" || username == "" {
 		return NewErr("name is invalid", "invalid_name_1")
 	}
 	if password == "" {
 		return NewErr("password is empty", "empty_password_2")
 	}
-	if _, err := user.DecryptPassword(true); err != nil {
+	if _, err := userMap.DecryptPassword(true); err != nil {
 		return NewErr("failed decrypting password", "depcr_failed_4")
 	}
-	if password != user.Password {
+	if password != userMap.Password {
 		return NewErr("password is not correct", "incorrect_password_2")
 	}
+	user.MapToUser(userM)
 	return nil
 }
 func (user *User) RegisterAccount(username, password string, db *mongo.Database) error {
