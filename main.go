@@ -7,7 +7,7 @@ import (
 	"log"
 	"main/functions"
 	"main/routes"
-	"main/routes/auth"
+	// "main/routes/auth"
 	"net/http"
 	"time"
 
@@ -62,24 +62,8 @@ func main() {
 
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
-	r.POST("/test/", func(c *gin.Context) {
-		auth.Register(c, db)
-		// session := mses.Default(c)
-		// session.Set("user", map[string]any{
-		// 	"name": "egegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergreegegergre",
-		// })
-		// fmt.Println(session.Save(c))
-		// c.JSON(200, session.Get("user"))
-	})
 
-	r.GET("/test", func(c *gin.Context) {
-		session := mses.Default(c)
-		// session.Set("user", map[string]any{
-		// 	"name": "hello world!",
-		// })
-		// fmt.Println(session.Save(c))
-		c.JSON(200, session.Get("user"))
-	})
+
 
 	r.Static("/static/", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
