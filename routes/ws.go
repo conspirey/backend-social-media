@@ -2,9 +2,11 @@ package routes
 
 import (
 	"fmt"
-	mses "main/functions/sessions"
 	"main/functions"
+	mses "main/functions/sessions"
+
 	"github.com/gin-gonic/gin"
+
 	// "github.com/gorilla/securecookie"
 
 	f "github.com/ambelovsky/gosf-socketio"
@@ -16,11 +18,7 @@ type Echo struct {
 func LoadWebSocket(r *gin.Engine, EncrKey string) *f.Server {
 	server := f.NewServer(transport.GetDefaultWebsocketTransport())
 	
-	// f.Listen("echo", func(client *f.Client, request *f.Request) *f.Message {
-	// 	f.Broadcast("", request.Endpoint, f.NewSuccessMessage("hello"))
-	// 	fmt.Print(request.Endpoint)
-	// 	return f.NewSuccessMessage(request.Message.Text)
-	//   })
+
 	
 	server.On(f.OnConnection, func(c *f.Channel) {
 		fmt.Println("New client connected")
@@ -34,15 +32,18 @@ func LoadWebSocket(r *gin.Engine, EncrKey string) *f.Server {
 		//send event to all in room
 		cookie, err := c.Request().Cookie("user")
 		if err == nil {
+			
 			str, _ := mses.GetDec(cookie.Value, EncrKey)
 			data := functions.StringToValue[map[string]any](str)
 			
-			fmt.Println(data["user"].(map[string]any)["name"])
+			// fmt.Println(data["user"].(map[string]any)["name"])
+			server.BroadcastTo("chat", "echo", map[string]interface{}{
+				"text": msg.Text,
+				"name": data["user"].(map[string]any)["name"],
+			})
 		}
 		
-		server.BroadcastTo("chat", "echo", map[string]interface{}{
-					"text": msg.Text,
-				})
+
 		// c.Emit("echo", map[string]interface{}{
 		// 		"text": msg.Text,
 		// 	})

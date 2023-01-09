@@ -63,15 +63,20 @@ func main() {
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
 
-
-
+	
+	r.Static("/assets/", "./static/assets")
 	r.Static("/static/", "./static")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
 	})
+	
 	r.POST("/socket.io/", gin.WrapH(server))
 	//r.GET("/socket.io/", gin.WrapH(f))
 
+
+	r.NoRoute(func(c *gin.Context) {
+		c.File("./static/index.html")
+	})
 
 
 
