@@ -16,6 +16,7 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database) {
 	r.POST("auth/register", func(c *gin.Context) {
 		auth.Register(c, db)
 	})
+	
 	//REMOVE THIS SOON
 	//REMOVE THIS SOON
 	//REMOVE THIS SOON

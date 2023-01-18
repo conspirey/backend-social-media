@@ -39,6 +39,10 @@ type User struct {
 	Password string `json:"password,omitempty"`
 	ID       string `json:"id"`
 	IP       string `json:"ip,omitempty"`
+	Admin 	 bool	`json:"admin"`
+	Banned   bool	`json:"banned"`
+	BannedUntil bool `json:"banned_until"`
+	
 }
 
 func (user *User) SetIP(ip string) {

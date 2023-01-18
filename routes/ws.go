@@ -39,7 +39,7 @@ func LoadWebSocket(r *gin.Engine, EncrKey string) *f.Server {
 			// fmt.Println(data["user"].(map[string]any)["name"])
 			server.BroadcastTo("chat", "echo", map[string]interface{}{
 				"text": msg.Text,
-				"name": data["user"].(map[string]any)["name"],
+				"user": data["user"],
 			})
 		}
 		
