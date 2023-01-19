@@ -26,14 +26,14 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		})
 	}
 	var typeC string = c.Query("type")
-	var msgT = structs.MessageType{}
+	var msgT = structs.NewMessage(Text.Text, session)
 	if err := msgT.Apply(typeC); err != nil {
 		c.JSON(400, Error(err.Error(), "invalid_type_3"))
 		return
 	}
 	
 	if msgT.Basic == typeC {
-		f.BroadcastTo("chat", "echo", )
+		f.BroadcastTo("chat", "echo", msgT.ToMap())
 	} else if msgT.Server == typeC {
 
 	}
