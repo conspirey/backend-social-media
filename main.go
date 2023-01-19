@@ -62,7 +62,14 @@ func main() {
 
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db)
-
+	r.GET("/e", func(c *gin.Context) {
+		server.BroadcastTo("chat", "echo", map[string]any{
+			"text": "BOZOZZOO",
+			"user": map[string]any{
+				"name": "mrredo",
+			},
+		})
+	})
 	
 	r.Static("/assets/", "./static/assets")
 	r.Static("/static/", "./static")
