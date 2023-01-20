@@ -34,9 +34,14 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 	}
 	// msg.SetUser(session)
 	// id, name := user.(map[string]any)["id"].(string), user.(map[string]any)["name"].(string)
-	
+	msg = *structs.NewMessage(msg.Text, session)
 	// var msg = structs.NewMessage()
 	if msgT.Basic == typeC {
+		// fmt.Println(user.(map[string]any)["id"])
+		// id := user.(map[string]any)["id"]
+		// msg.User.Name = id.(string) //user.(map[string]any)["name"].(string)
+		// msg.User.ID = user.(map[string]any)["id"].(string)
+
 		f.BroadcastTo("chat", "echo", msg.ToMap())
 		fmt.Println(msg.ToMap(), msg, user)
 		c.Status(200)

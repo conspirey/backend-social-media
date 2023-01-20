@@ -41,7 +41,7 @@ type User struct {
 	IP       string `json:"ip,omitempty"`
 	Admin 	 bool	`json:"admin"`
 	Banned   bool	`json:"banned"`
-	BannedUntil bool `json:"banned_until"`
+	BannedUntil int64 `json:"banned_until"`
 	
 }
 
