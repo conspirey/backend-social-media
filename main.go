@@ -61,7 +61,7 @@ func main() {
 
 
 	server := routes.LoadWebSocket(r, keypair)
-	routes.LoadRoutes(r, db)
+	routes.LoadRoutes(r, db, server)
 	r.GET("/e", func(c *gin.Context) {
 		server.BroadcastTo("chat", "echo", map[string]any{
 			"text": "BOZOZZOO",

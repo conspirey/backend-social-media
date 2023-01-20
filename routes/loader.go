@@ -4,17 +4,22 @@ import (
 	"main/functions/security"
 	"main/routes/auth"
 	"main/routes/cookie"
+	"main/routes/message"
 
+	gosocketio "github.com/ambelovsky/gosf-socketio"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func LoadRoutes(r *gin.Engine, db *mongo.Database) {
+func LoadRoutes(r *gin.Engine, db *mongo.Database, server *gosocketio.Server) {
 	auths := r.Group("/auth/")
 	api := r.Group("/api/")
 	api.GET("/user", auth.GetUserData)
 	r.POST("auth/register", func(c *gin.Context) {
 		auth.Register(c, db)
+	})
+	api.POST("/message", func(c *gin.Context) {
+		message.CreateMessage(c,server,db)
 	})
 	
 	//REMOVE THIS SOON

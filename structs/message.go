@@ -3,6 +3,7 @@ package structs
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 
 	"main/functions/sessions"
 )
@@ -17,6 +18,15 @@ type MessageUser struct {
 type Message struct {
 	User *MessageUser `json:"user"`
 	Text string `json:"text"`
+	TextStyle string `json:"text_style,omitempty"`
+	NameStyle string `json:"name_style,omitempty"`
+}
+func (msg *Message) SetUser(session sessions.Session) {
+	user := session.Get("user").(map[string]any)
+	fmt.Println()
+	msg.User.ID = user["id"].(string)
+	msg.User.Name = user["name"].(string)
+
 }
 func (mt *MessageType) Apply(mtype string) (success error) {
 	if mtype == "server" {
@@ -63,4 +73,24 @@ func NewMessage(text string, session sessions.Session) *Message {
 		},
 
 	}
+}
+func (msg *MessageUser) MapToUser(umap map[string]any) {
+	by, err := json.Marshal(umap)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(by, &msg); err != nil {
+		panic(err)
+	}
+}
+func (msg *MessageUser) ToMap() map[string]any {
+	by, err := json.Marshal(msg)
+	if err != nil {
+		panic(err)
+	}
+	UMap := map[string]any{}
+	if err := json.Unmarshal(by, &UMap); err != nil {
+		panic(err)
+	}
+	return UMap
 }
