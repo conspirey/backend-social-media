@@ -46,8 +46,11 @@ func main() {
 		db.CreateCollection(context.TODO(), "user")
 	}
 	r.Use(cors.New(cors.Config{
-		// AllowAllOrigins: true,
-		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173"},
+		 AllowAllOrigins: true,
+		 AllowWildcard: true,
+		 AllowWebSockets: true,
+		 AllowBrowserExtensions: true,
+		//AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173"},
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,
@@ -71,8 +74,8 @@ func main() {
 		})
 	})
 	
-	r.Static("/assets/", "./static/assets")
-	r.Static("/static/", "./static")
+	r.Static("/assets/", "./frontend/dist/assets")
+	r.Static("/static/", "./frontend/dist")
 	r.GET("/socket.io/", func(c *gin.Context) {
 		RunHTTPHandler(server, c)
 	})
@@ -82,7 +85,7 @@ func main() {
 
 
 	r.NoRoute(func(c *gin.Context) {
-		c.File("./static/index.html")
+		c.File("./frontend/dist/index.html")
 	})
 
 
