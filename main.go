@@ -90,7 +90,7 @@ func main() {
 
 
 
-	r.Run("localhost:3200")
+	r.Run(":3200")
 
 	//defer f.Shutdown()
 }
