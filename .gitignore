@@ -5,7 +5,7 @@
 *.so
 *.dylib
 frontend/*
-!frontend/dist
+frontend
 # Test binary, built with `go test -c`
 *.test
 
