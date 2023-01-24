@@ -3,10 +3,14 @@ package main
 import (
 	"context"
 	"encoding/gob"
+	"os"
+	"net"
+
 	// "fmt"
 	"log"
 	"main/functions"
 	"main/routes"
+
 	// "main/routes/auth"
 	"net/http"
 	"time"
@@ -89,8 +93,16 @@ func main() {
 	})
 
 
+	if os.Getenv("GIN_MODE") == "release" {
+		listener, err := net.Listen("tcp4", "0.0.0.0:3200")
+		if err != nil {
+			// handle error
+		}
+		r.RunListener(listener)
+	} else {
+		r.Run(":3200")
+	}
 
-	r.Run(":3200")
 
 	//defer f.Shutdown()
 }
