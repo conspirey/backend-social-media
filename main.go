@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	"encoding/gob"
-	"fmt"
-	"net"
-	"os"
+	// "fmt"
+	// "net"
+	// "os"
 
-	"github.com/spf13/cobra"
+	// "github.com/spf13/cobra"
 
 	// "fmt"
 	"log"
@@ -105,37 +105,36 @@ func main() {
 	// } else {
 	// 	r.Run(":3200")
 	// }
-	if err := CMD(r).Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	  }
-
-
+	// if err := CMD(r).Execute(); err != nil {
+	// 	fmt.Fprintln(os.Stderr, err)
+	// 	os.Exit(1)
+	//   }
+	r.Run(":3200")
 	//defer f.Shutdown()
 }
 func RunHTTPHandler(h http.Handler, c *gin.Context) {
 	h.ServeHTTP(c.Writer, c.Request)
 }
 
-func CMD(r *gin.Engine) *cobra.Command {
-	var rootCMD = &cobra.Command{
-		Use: "conspirey",
-		Short: "Help is to help you",
+// func CMD(r *gin.Engine) *cobra.Command {
+// 	var rootCMD = &cobra.Command{
+// 		Use: "conspirey",
+// 		Short: "Help is to help you",
 	
-		Run: func(c *cobra.Command, args []string) {
+// 		Run: func(c *cobra.Command, args []string) {
 			
-			if args[0] == "release" {
-				listener, err := net.Listen("tcp4", "0.0.0.0:3200")
-				if err != nil {
+// 			if args[0] == "release" {
+// 				listener, err := net.Listen("tcp4", "0.0.0.0:3200")
+// 				if err != nil {
 					
-				}
-				r.RunListener(listener)
-			} else {
-				r.Run(":3200")
-			}
+// 				}
+// 				r.RunListener(listener)
+// 			} else {
+// 				r.Run(":3200")
+// 			}
 			
 	
-		},
-	}
-	return rootCMD
-}
+// 		},
+// 	}
+// 	return rootCMD
+// }
