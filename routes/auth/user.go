@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	mses "main/functions/sessions"
 	"main/structs"
 	"strings"
@@ -24,7 +23,7 @@ func Login(c *gin.Context, db *mongo.Database) {
 		return
 	}
 	session := mses.Default(c)
-	fmt.Println(user)
+	// fmt.Println(user)
 	session.Set("user", user.ToMapCookie())
 	err := session.Save(c)
 	if err != nil {

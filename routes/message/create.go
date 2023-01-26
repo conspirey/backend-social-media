@@ -1,7 +1,7 @@
 package message
 
 import (
-	"fmt"
+	// "fmt"
 	"main/functions/sessions"
 	"main/structs"
 	"strings"
@@ -43,7 +43,7 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		// msg.User.ID = user.(map[string]any)["id"].(string)
 
 		f.BroadcastTo("chat", "echo", msg.ToMap())
-		fmt.Println(msg.ToMap(), msg, user)
+		// fmt.Println(msg.ToMap(), msg, user)
 		c.Status(200)
 	} else if msgT.Server == typeC {
 

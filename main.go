@@ -31,11 +31,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 var (
-	r = gin.Default();
+	
 	keypair = functions.RandStringRunes(32)
 )
 
 func main() {
+	// gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
+	r := gin.Default();
 	gob.Register(map[string]interface{}{})
 	gob.Register(map[interface{}]interface{}{})
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
@@ -53,11 +56,11 @@ func main() {
 		db.CreateCollection(context.TODO(), "user")
 	}
 	r.Use(cors.New(cors.Config{
-		 AllowAllOrigins: true,
+		//  AllowAllOrigins: true,
 		 AllowWildcard: true,
 		 AllowWebSockets: true,
 		 AllowBrowserExtensions: true,
-		//AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173"},
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173", "http://conspirey.xyz", "http://vm5.spacerv.ovh:3623/", "http://localhost:3623", "http://127.0.0.1:3623"},
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,

@@ -126,7 +126,7 @@ func (user *User) Login(username, password string, db *mongo.Database) error {
 	}, options.FindOne(), db, "user")
 	userMap := User{}
 	userMap.MapToUser(userM)
-	fmt.Println(username, password, user)
+	// fmt.Println(username, password, user)
 	if userMap.Name == "" || username == "" {
 		return NewErr("name is invalid", "invalid_name_1")
 	}

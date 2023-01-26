@@ -3,7 +3,7 @@ package structs
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+	// "fmt"
 
 	"main/functions/sessions"
 )
@@ -23,7 +23,7 @@ type Message struct {
 }
 func (msg *Message) SetUser(session sessions.Session) {
 	user := session.Get("user").(map[string]any)
-	fmt.Println()
+	// fmt.Println()
 	msg.User.ID = user["id"].(string)
 	msg.User.Name = user["name"].(string)
 
