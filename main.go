@@ -60,7 +60,7 @@ func main() {
 		 AllowWildcard: true,
 		 AllowWebSockets: true,
 		 AllowBrowserExtensions: true,
-		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173", "http://conspirey.xyz", "http://vm5.spacerv.ovh:3623/", "http://localhost:3623", "http://127.0.0.1:3623"},
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173", "https://conspirey.xyz", "http://vm5.spacerv.ovh:3623/", "http://localhost:3623", "http://127.0.0.1:3623"},
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,
