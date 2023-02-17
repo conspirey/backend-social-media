@@ -112,7 +112,9 @@ func main() {
 	// 	fmt.Fprintln(os.Stderr, err)
 	// 	os.Exit(1)
 	//   }
-	r.Run(":3623")
+	
+	r.RunTLS(":3200", "./ssl/cert.pem", "./ssl/keys.pem")
+	//r.Run(":3623")
 	//defer f.Shutdown()
 }
 func RunHTTPHandler(h http.Handler, c *gin.Context) {

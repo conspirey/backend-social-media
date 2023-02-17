@@ -4,7 +4,7 @@
 *.dll
 *.so
 *.dylib
-frontend/*
+
 frontend
 # Test binary, built with `go test -c`
 *.test
