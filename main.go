@@ -55,12 +55,13 @@ func main() {
 	if !mongof.CollectionExists("user", db) {
 		db.CreateCollection(context.TODO(), "user")
 	}
+
 	r.Use(cors.New(cors.Config{
 		//  AllowAllOrigins: true,
-		 AllowWildcard: true,
-		 AllowWebSockets: true,
-		 AllowBrowserExtensions: true,
-		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173", "http://192.168.8.114:5173", "https://conspirey.xyz", "http://vm5.spacerv.ovh:3623/", "http://localhost:3623", "http://127.0.0.1:3623"},
+		AllowWildcard: true,
+		AllowWebSockets: true,
+		AllowBrowserExtensions: true,
+		AllowOrigins: []string{"http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173","https://127.0.0.1:443","http://127.0.0.1:80", "http://192.168.8.114:5173", "https://conspirey.xyz", "http://vm5.spacerv.ovh:3623/", "http://localhost:3623", "http://127.0.0.1:3623"},
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders: []string{"Origin","Content-Length", "Content-Type", "Accept", "Cookie", "Set-Cookie"},
 		AllowCredentials: true,
@@ -75,14 +76,7 @@ func main() {
 
 	server := routes.LoadWebSocket(r, keypair)
 	routes.LoadRoutes(r, db, server)
-	r.GET("/e", func(c *gin.Context) {
-		server.BroadcastTo("chat", "echo", map[string]any{
-			"text": "BOZOZZOO",
-			"user": map[string]any{
-				"name": "mrredo",
-			},
-		})
-	})
+
 	
 	r.Static("/assets/", "./frontend/dist/assets")
 	r.Static("/static/", "./frontend/dist")
@@ -113,7 +107,7 @@ func main() {
 	// 	os.Exit(1)
 	//   }
 	
-	r.RunTLS(":3200", "./ssl/cert.pem", "./ssl/keys.pem")
+	r.RunTLS(":3100", "./ssl/cert.pem", "./ssl/keys.pem")
 	//r.Run(":3623")
 	//defer f.Shutdown()
 }
