@@ -14,7 +14,9 @@ import (
 func LoadRoutes(r *gin.Engine, db *mongo.Database, server *gosocketio.Server) {
 	auths := r.Group("/auth/")
 	api := r.Group("/api/")
-	api.GET("/user", auth.GetUserData)
+	api.GET("/user", func (c *gin.Context) {
+		auth.GetUserData(c, db)
+	})
 	r.POST("auth/register", func(c *gin.Context) {
 		auth.Register(c, db)
 	})
