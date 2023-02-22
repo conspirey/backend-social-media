@@ -3,6 +3,10 @@ package main
 import (
 	"context"
 	"encoding/gob"
+	"fmt"
+	"os"
+	"strings"
+
 	// "fmt"
 	// "net"
 	// "os"
@@ -37,7 +41,7 @@ var (
 
 func main() {
 	// gin.SetMode(gin.DebugMode)
-	gin.SetMode(gin.ReleaseMode)
+	
 	r := gin.Default();
 	gob.Register(map[string]interface{}{})
 	gob.Register(map[interface{}]interface{}{})
@@ -106,8 +110,22 @@ func main() {
 	// 	fmt.Fprintln(os.Stderr, err)
 	// 	os.Exit(1)
 	//   }
+	fmt.Println(os.Args)
 	
-	r.RunTLS(":3100", "./ssl/cert.pem", "./ssl/keys.pem")
+	if len(os.Args) > 1  {
+		if strings.ToLower(os.Args[1]) == "release" {
+			gin.SetMode(gin.ReleaseMode)
+			r.RunTLS(":3100", "./ssl/cert.pem", "./ssl/keys.pem")
+		} else {
+			gin.SetMode(gin.DebugMode)
+			r.Run(":3100")
+		}
+		
+	} else {
+		gin.SetMode(gin.DebugMode)
+		r.Run(":3100")
+	}
+	
 	// r.Run(":3100")
 	//defer f.Shutdown()
 }
