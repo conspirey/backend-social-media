@@ -44,7 +44,11 @@ type User struct {
 	BannedUntil int64 `json:"banned_until"`
 	
 }
-
+func StripMapOfImportantInfo(u map[string]any) {
+	delete(u, "ip")
+	delete(u, "password")
+	delete(u, "_id")
+}
 func (user *User) SetIP(ip string) {
 	user.IP = strings.Split(ip, ":")[0]
 }
