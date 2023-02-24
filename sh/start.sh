@@ -1,4 +1,4 @@
 ./stop.sh
 ./build.sh
 cd ..
-./backend_conspirey
+./backend_conspirey release
