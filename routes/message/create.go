@@ -10,7 +10,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
+/*
+Requirements to use
+- Valid Cookie header - example - Cookie: user={cookie_string}
+- json data { "text": "hello world!"}
+- Query type=basic|server
+*/
 func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 	session := sessions.Default(c)
 	var msg structs.Message;
@@ -44,6 +49,9 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 
 		f.BroadcastTo("chat", "echo", msg.ToMap())
 		// fmt.Println(msg.ToMap(), msg, user)
+		c.JSON(200, gin.H{
+			"success": "message_is_sent",
+		})
 		c.Status(200)
 	} else if msgT.Server == typeC {
 

@@ -118,12 +118,12 @@ func main() {
 			r.RunTLS(":3100", "./ssl/cert.pem", "./ssl/keys.pem")
 		} else {
 			gin.SetMode(gin.DebugMode)
-			r.Run(":3100")
+			r.Run("localhost:3100")
 		}
 		
 	} else {
 		gin.SetMode(gin.DebugMode)
-		r.Run(":3100")
+		r.Run("localhost:3100")
 	}
 	
 	// r.Run(":3100")
