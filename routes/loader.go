@@ -5,6 +5,7 @@ import (
 	"main/routes/auth"
 	"main/routes/cookie"
 	"main/routes/message"
+	"main/routes/user"
 
 	gosocketio "github.com/ambelovsky/gosf-socketio"
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,9 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database, server *gosocketio.Server) {
 	api := r.Group("/api/")
 	api.GET("/user", func (c *gin.Context) {
 		auth.GetUserData(c, db)
+	})
+	api.PATCH("/user/admin", func (c *gin.Context) {
+		user.SetAdmin(c, db)
 	})
 	r.POST("auth/register", func(c *gin.Context) {
 		auth.Register(c, db)
