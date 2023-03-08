@@ -1,15 +1,19 @@
 package message
 
 import (
-	// "fmt"
+
+	mongof "main/functions/mongo"
 	"main/functions/sessions"
 	"main/structs"
 	"strings"
 
 	sock "github.com/ambelovsky/gosf-socketio"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
 /*
 Requirements to use
 - Valid Cookie header - example - Cookie: user={cookie_string}
@@ -39,7 +43,7 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 	}
 	// msg.SetUser(session)
 	// id, name := user.(map[string]any)["id"].(string), user.(map[string]any)["name"].(string)
-	msg = *structs.NewMessage(msg.Text, session)
+	msg = *structs.NewMessage(msg.Text,typeC, session)
 	// var msg = structs.NewMessage()
 	if msgT.Basic == typeC {
 		// fmt.Println(user.(map[string]any)["id"])
@@ -53,8 +57,28 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 			"success": "message_is_sent",
 		})
 		c.Status(200)
-	} else if msgT.Server == typeC {
+	} else if msgT.Server == typeC {	
+		data, err := mongof.FindOne(bson.M{"id":msg.User.ID}, options.FindOne(), db, "user")
+		if err != nil {
+			c.JSON(500, gin.H{
+				"error": "server_database_error",
+			})
+			return
+		}
+		user := &structs.User{}
+		user.MapToUser(data)
+		if !user.Admin {
+			c.JSON(400, gin.H{
+				"error": "not_an_admin",
+				"error_message": "You have to be admin to continue",
+			})
+		}
+		f.BroadcastTo("chat", "echo", msg.ToMap())
 
+		c.JSON(200, gin.H{
+			"success": "message_is_sent",
+		})
+		
 	}
 }
 

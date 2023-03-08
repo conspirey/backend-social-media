@@ -18,6 +18,7 @@ type MessageUser struct {
 type Message struct {
 	User *MessageUser `json:"user"`
 	Text string `json:"text"`
+	Type string `json:"type"`
 	TextStyle string `json:"text_style,omitempty"`
 	NameStyle string `json:"name_style,omitempty"`
 }
@@ -60,12 +61,13 @@ func (msg *Message) ToMap() map[string]any {
 	return UMap
 }
 
-func NewMessage(text string, session sessions.Session) *Message {
+func NewMessage(text string,msgType string, session sessions.Session) *Message {
 	user := session.Get("user").(map[string]any)
 
 
 	return &Message{
 		Text: text,
+		Type: msgType, // basic|server
 		User: &MessageUser{
 			Name: user["name"].(string),
 			ID: user["id"].(string),
