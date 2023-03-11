@@ -3,6 +3,8 @@ package structs
 import (
 	"encoding/json"
 	"errors"
+	"regexp"
+
 	// "fmt"
 
 	"main/functions/sessions"
@@ -27,8 +29,13 @@ type Message struct {
 }
 type ServerMessage struct {
 	Timer   int64  `json:"timer"`
+	Delay   int64  `json:"delay"`
 	Message string `json:"message"`
 }
+
+var (
+	ServerMessageTimerRegex = regexp.MustCompile(`({timer}|\[timer\])`)
+)
 
 func (msg *Message) SetUser(session sessions.Session) {
 	user := session.Get("user").(map[string]any)
