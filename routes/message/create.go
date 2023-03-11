@@ -1,7 +1,6 @@
 package message
 
 import (
-
 	mongof "main/functions/mongo"
 	"main/functions/sessions"
 	"main/structs"
@@ -18,11 +17,11 @@ import (
 Requirements to use
 - Valid Cookie header - example - Cookie: user={cookie_string}
 - json data { "text": "hello world!"}
-- Query type=basic|server
+- Query type=basic|server|server_timer
 */
 func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 	session := sessions.Default(c)
-	var msg structs.Message;
+	var msg structs.Message = structs.Message{ServerMessage: &structs.ServerMessage{}}
 	user := session.Get("user")
 	if user == nil {
 		c.JSON(401, Error("Not Authorized", "not_authorized_3"))
@@ -31,19 +30,23 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 	if err := c.ShouldBindJSON(&msg); err != nil {
 		c.JSON(400, gin.H{
 			"error_message": "invalid json provided",
-			"error": "invalid_json",
+			"error":         "invalid_json",
 		})
 		return
 	}
 	var typeC string = strings.ToLower(c.Query("type"))
 	var msgT = structs.MessageType{}
 	if err := msgT.Apply(typeC); err != nil {
-		c.JSON(400, Error(err.Error() + "| all types: basic, server", "invalid_type_3"))
+		c.JSON(400, Error(err.Error()+"| all types: basic, server, server_timer", "invalid_type_3"))
 		return
 	}
 	// msg.SetUser(session)
 	// id, name := user.(map[string]any)["id"].(string), user.(map[string]any)["name"].(string)
-	msg = *structs.NewMessage(msg.Text,typeC, session)
+	msg = *structs.NewMessage(msg.Text, typeC, session, &structs.ServerMessage{
+		Timer:   msg.ServerMessage.Timer,
+		Message: msg.ServerMessage.Message,
+	})
+
 	// var msg = structs.NewMessage()
 	if msgT.Basic == typeC {
 		// fmt.Println(user.(map[string]any)["id"])
@@ -57,8 +60,8 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 			"success": "message_is_sent",
 		})
 		c.Status(200)
-	} else if msgT.Server == typeC {	
-		data, err := mongof.FindOne(bson.M{"id":msg.User.ID}, options.FindOne(), db, "user")
+	} else if msgT.Server == typeC {
+		data, err := mongof.FindOne(bson.M{"id": msg.User.ID}, options.FindOne(), db, "user")
 		if err != nil {
 			c.JSON(500, gin.H{
 				"error": "server_database_error",
@@ -69,7 +72,7 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		user.MapToUser(data)
 		if !user.Admin {
 			c.JSON(400, gin.H{
-				"error": "not_an_admin",
+				"error":         "not_an_admin",
 				"error_message": "You have to be admin to continue",
 			})
 		}
@@ -78,13 +81,27 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		c.JSON(200, gin.H{
 			"success": "message_is_sent",
 		})
-		
+
+	} else if msgT.ServerTimer == typeC {
+		//if err := c.ShouldBindJSON(&msg); err != nil {
+		//	c.JSON(400, gin.H{
+		//		"error_message": "invalid json provided",
+		//		"error":         "invalid_json",
+		//	})
+		//	return
+		//}
+		//
+		if msg.ServerMessage.Timer == 0 {
+			c.JSON(400, gin.H{"ddddd": "efafgaefgwregwe"})
+			return
+		}
+		c.JSON(200, gin.H{"hello": "ee"})
 	}
 }
 
 func Error(text string, err string) gin.H {
 	return gin.H{
-		"error": err,
+		"error":         err,
 		"error_message": text,
 	}
 }

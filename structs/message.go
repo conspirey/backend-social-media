@@ -7,21 +7,29 @@ import (
 
 	"main/functions/sessions"
 )
+
 type MessageType struct {
-	Server string
-	Basic  string
+	Server      string
+	Basic       string
+	ServerTimer string
 }
 type MessageUser struct {
 	Name string `json:"name"`
-	ID string `json:"id"`
+	ID   string `json:"id"`
 }
 type Message struct {
-	User *MessageUser `json:"user"`
-	Text string `json:"text"`
-	Type string `json:"type"`
-	TextStyle string `json:"text_style,omitempty"`
-	NameStyle string `json:"name_style,omitempty"`
+	User          *MessageUser   `json:"user"`
+	Text          string         `json:"text"`
+	Type          string         `json:"type"`
+	ServerMessage *ServerMessage `json:"server_message"`
+	TextStyle     string         `json:"text_style,omitempty"`
+	NameStyle     string         `json:"name_style,omitempty"`
 }
+type ServerMessage struct {
+	Timer   int64  `json:"timer"`
+	Message string `json:"message"`
+}
+
 func (msg *Message) SetUser(session sessions.Session) {
 	user := session.Get("user").(map[string]any)
 	// fmt.Println()
@@ -36,8 +44,11 @@ func (mt *MessageType) Apply(mtype string) (success error) {
 	} else if mtype == "basic" {
 		mt.Basic = mtype
 		return nil
+	} else if mtype == "server_timer" {
+		mt.ServerTimer = mtype
+		return nil
 	}
-	return errors.New("Invalid message type")
+	return errors.New("invalid message type")
 }
 
 func (msg *Message) MapToUser(umap map[string]any) {
@@ -61,20 +72,20 @@ func (msg *Message) ToMap() map[string]any {
 	return UMap
 }
 
-func NewMessage(text string,msgType string, session sessions.Session) *Message {
+func NewMessage(text string, msgType string, session sessions.Session, ServerMessageV *ServerMessage) *Message {
 	user := session.Get("user").(map[string]any)
-
-
-	return &Message{
+	message := &Message{
 		Text: text,
 		Type: msgType, // basic|server
 		User: &MessageUser{
 			Name: user["name"].(string),
-			ID: user["id"].(string),
-
+			ID:   user["id"].(string),
 		},
-
 	}
+	if msgType == "server_timer" {
+		message.ServerMessage = ServerMessageV
+	}
+	return message
 }
 func (msg *MessageUser) MapToUser(umap map[string]any) {
 	by, err := json.Marshal(umap)

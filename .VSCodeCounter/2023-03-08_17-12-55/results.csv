@@ -1,0 +1,51 @@
+"filename", "language", "Go", "HTML", "PostCSS", "XML", "Shell Script", "Go Checksum File", "Go Module File", "Markdown", "JavaScript", "YAML", "comment", "blank", "total"
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\.github\workflows\go.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 89, 11, 4, 104
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\.idea\backend-social-media.iml", "XML", 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 10
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\.idea\modules.xml", "XML", 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 9
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\.idea\vcs.xml", "XML", 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 7
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\.idea\workspace.xml", "XML", 0, 0, 0, 85, 0, 0, 0, 0, 0, 0, 0, 0, 85
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 3, 10
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\Base64ED.go", "Go", 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 19
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\GetStringBetween.go", "Go", 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 33
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\RemoveItemFromArrayByIndex.go", "Go", 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 18
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\cookieStringtoJSON.go", "Go", 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6, 43
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\cooldown\cooldown.go", "Go", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\csrf\csrf.go", "Go", 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 29, 135
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\derefString.go", "Go", 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 10
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\mongo\database.go", "Go", 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 9, 193
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\pointer.go", "Go", 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\randString.go", "Go", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\rateLimiter\rateLimiter.go", "Go", 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 3, 28
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\savePreviousURLtoSession.go", "Go", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\security\encrypt.go", "Go", 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 6, 70
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\sessions\session.go", "Go", 118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 13, 145
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\snowflake\postID.go", "Go", 233, 0, 0, 0, 0, 0, 0, 0, 0, 0, 58, 76, 367
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\validXML.go", "Go", 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\functions\xss.go", "Go", 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 33
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\go.mod", "Go Module File", 0, 0, 0, 0, 0, 0, 49, 0, 0, 0, 0, 4, 53
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\go.sum", "Go Checksum File", 0, 0, 0, 0, 0, 157, 0, 0, 0, 0, 0, 1, 158
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\main.go", "Go", 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 47, 33, 158
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\auth\get.go", "Go", 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 44
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\auth\user.go", "Go", 77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7, 85
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\cookie\cookie.go", "Go", 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 31
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\loader.go", "Go", 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 6, 62
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\message\broadcast.go", "Go", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\message\create.go", "Go", 73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 9, 96
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\user\admin.go", "Go", 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 7, 80
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\user\ban.go", "Go", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\routes\ws.go", "Go", 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 19, 19, 70
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\build.sh", "Shell Script", 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 3
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\echo.sh", "Shell Script", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\nohup_start.sh", "Shell Script", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\pull.sh", "Shell Script", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\push.sh", "Shell Script", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 3
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\start.sh", "Shell Script", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 5
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\sh\stop.sh", "Shell Script", 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\static\assets\index-08f9f5ff.js", "JavaScript", 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 6, 1, 72
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\static\assets\index-e3b202fe.css", "PostCSS", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\static\index.html", "HTML", 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 16
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\static\vite.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\structs\cookie.go", "Go", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\structs\message.go", "Go", 87, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 9, 98
+"c:\Users\Lietotājs\Documents\GitHub\conspiracy\backend-social-media\structs\user.go", "Go", 203, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 16, 237
+"Total", "-", 1533, 14, 1, 112, 14, 157, 49, 7, 65, 89, 302, 307, 2650
