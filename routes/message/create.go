@@ -92,8 +92,8 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 			c.JSON(400, Error("timer has to be more than 0 and cant be greater than 100", "invalid_timer"))
 			return
 		}
-		if msg.ServerMessage.Delay == 0 || msg.ServerMessage.Delay > 10000 {
-			c.JSON(400, Error("Delay must be from 1ms to 10000ms", "invalid_delay"))
+		if msg.ServerMessage.Delay < -1 || msg.ServerMessage.Delay > 10000 {
+			c.JSON(400, Error("Delay must be from 0ms to 10000ms", "invalid_delay"))
 			return
 		}
 		data, err := mongof.FindOne(bson.M{"id": msg.User.ID}, options.FindOne(), db, "user")
@@ -136,7 +136,9 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		}
 		//for i:= 0;
 
-		c.JSON(200, gin.H{"hello": "ee"})
+		c.JSON(200, gin.H{
+			"success": "message_is_sent",
+		})
 	}
 }
 
