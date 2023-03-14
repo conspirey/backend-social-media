@@ -1,6 +1,6 @@
 # backend-social-media
 Backend written in Go using gin gonic web server.
-
+# LICENSE
 Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
 
 This work is licensed under a
