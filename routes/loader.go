@@ -6,7 +6,7 @@ import (
 	"main/routes/cookie"
 	"main/routes/message"
 	"main/routes/user"
-
+	"main/routes/updatedata"
 	gosocketio "github.com/ambelovsky/gosf-socketio"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,6 +17,11 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database, server *gosocketio.Server) {
 	api := r.Group("/api/")
 	api.GET("/user", func (c *gin.Context) {
 		auth.GetUserData(c, db)
+	})
+	api.GET("/encryption", func(ctx *gin.Context) {
+		updatedata.UpdateUserData(ctx, db)
+		
+		
 	})
 	api.PATCH("/user/admin", func (c *gin.Context) {
 		user.SetAdmin(c, db)

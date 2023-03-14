@@ -6,31 +6,21 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"github.com/joho/godotenv"
 
-	// "fmt"
-	// "net"
-	// "os"
-
-	// "github.com/spf13/cobra"
-
-	// "fmt"
 	"log"
 	"main/functions"
 	"main/routes"
 
-	// "main/routes/auth"
 	"net/http"
 	"time"
 
-	// "github.com/gin-contrib/sessions"
 	mongof "main/functions/mongo"
 	mses "main/functions/sessions"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	//f "github.com/ambelovsky/gosf"
-	// "github.com/gin-contrib/sessions/mongo/mongodriver"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -41,13 +31,17 @@ var (
 
 func main() {
 	// gin.SetMode(gin.DebugMode)
-	
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Some error occured. Err: %s", err)
+	}
 	r := gin.Default();
 	gob.Register(map[string]interface{}{})
 	gob.Register(map[interface{}]interface{}{})
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
 	clientOptions := options.Client().
-    ApplyURI("mongodb+srv://redobot:dbuserpassword123@cluster0.rhc8q.mongodb.net/Cluster0?retryWrites=true&w=majority").
+	ApplyURI(os.Getenv("MONGO")).
+    // ApplyURI("mongodb+srv://redobot:dbuserpassword123@cluster0.rhc8q.mongodb.net/Cluster0?retryWrites=true&w=majority").
     SetServerAPIOptions(serverAPIOptions)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
