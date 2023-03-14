@@ -7,6 +7,7 @@ import (
 	mongof "main/functions/mongo"
 	"main/functions/security"
 	"main/functions/snowflake"
+	"os"
 	"regexp"
 	"strings"
 
@@ -16,20 +17,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const (
-	/*
-		jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
-		jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
-		jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
-		jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
-		jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL
-	*/
-	Key = "jX4:k357Q-,XK=!:hf4,r8RpiXVBvXzL"
-)
+
 
 var (
 	NAME_REGEX     = regexp.MustCompile("^[a-zA-Z0-9_]{3,16}$")
 	PASSWORD_REGEX = regexp.MustCompile(`^.{8,32}$`)
+	Key = os.Getenv("ENCRYPTION_KEY")
 )
 
 //DIsplayName feature
@@ -53,7 +46,7 @@ func (user *User) SetIP(ip string) {
 	user.IP = strings.Split(ip, ":")[0]
 }
 func (user *User) Key() string {
-	return Key
+	return os.Getenv("ENCRYPTION_KEY")
 }
 func (user *User) IsValidPass() bool {
 	return PASSWORD_REGEX.MatchString(user.Password)
@@ -62,7 +55,7 @@ func (user *User) IsValidName() bool {
 	return NAME_REGEX.MatchString(user.Name)
 }
 func (user *User) DecryptPassword(changeSTR bool) (string, error) {
-	pass, err := security.Decrypt(user.Password, Key)
+	pass, err := security.Decrypt(user.Password, user.Key())
 	if changeSTR {
 		user.Password = pass
 	}
@@ -70,7 +63,7 @@ func (user *User) DecryptPassword(changeSTR bool) (string, error) {
 }
 
 func (user *User) EncryptPassword(changeSTR bool) (string, error) {
-	pass, err := security.Encrypt(user.Password, Key)
+	pass, err := security.Encrypt(user.Password, user.Key())
 	if changeSTR {
 		user.Password = pass
 	}

@@ -25,12 +25,12 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 var (
-	
 	keypair = functions.RandStringRunes(32)
 )
 
 func main() {
 	// gin.SetMode(gin.DebugMode)
+	
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
@@ -68,7 +68,7 @@ func main() {
 	r.Use(mses.MiddleWare("user", keypair, 3600*48, "", "/", false, false, http.SameSiteNoneMode))
 	// cs := db.Collection("sessions")
 	// store := mongodriver.NewStore(cs, 3600*48, true, []byte(keypair)) // change 3600 time how to: delete everything in mongodb collection
-	
+
 	// r.Use(sessions.Sessions("mysession", store))
 
 

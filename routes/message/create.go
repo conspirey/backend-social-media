@@ -1,7 +1,6 @@
 package message
 
 import (
-	"fmt"
 	mongof "main/functions/mongo"
 	"main/functions/sessions"
 	"main/structs"
@@ -116,18 +115,12 @@ func CreateMessage(c *gin.Context, f *sock.Server, db *mongo.Database) {
 		ogString := msg.Text
 		if len(matches) > 0 {
 			for i := msg.ServerMessage.Timer; i >= 1; i-- {
-				//matchesS := structs.ServerMessageTimerRegex.FindAllString(msg.Text, -1)
 
-				outputString := msg.Text
-				for _, match := range matches {
-					outputString = strings.Replace(ogString, match, strconv.Itoa(int(i)), 1)
-
-				}
+				outputString := structs.ServerMessageTimerRegex.ReplaceAllString(ogString, strconv.Itoa(int(i)))
 
 				time.Sleep(time.Duration(msg.ServerMessage.Delay) * time.Millisecond)
 				msg.Text = outputString
 				msg.Type = "server"
-				fmt.Println()
 				f.BroadcastTo("chat", "echo", msg.ToMap())
 			}
 		} else {

@@ -6,6 +6,8 @@
 *.dylib
 .env
 frontend
+backend_conspirey
+main
 # Test binary, built with `go test -c`
 *.test
 
