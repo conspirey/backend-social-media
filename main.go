@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/gob"
-	"fmt"
 	"os"
 	"strings"
 	"github.com/joho/godotenv"
@@ -49,7 +48,12 @@ func main() {
 	if err != nil {
     	log.Fatal(err)
 	}
-	db := client.Database("conspir")
+	var db = client.Database("conspir_test")
+	if len(os.Args) > 1  {
+		if os.Args[2] == "true" {
+			db = client.Database("conspir")
+		}
+	}
 	if !mongof.CollectionExists("user", db) {
 		db.CreateCollection(context.TODO(), "user")
 	}
@@ -104,7 +108,6 @@ func main() {
 	// 	fmt.Fprintln(os.Stderr, err)
 	// 	os.Exit(1)
 	//   }
-	fmt.Println(os.Args)
 	
 	if len(os.Args) > 1  {
 		if strings.ToLower(os.Args[1]) == "release" {

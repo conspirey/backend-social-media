@@ -20,6 +20,13 @@ Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
 - git clone https://github.com/conspirey/frontend-conspirey
 - Rename frontend-conspirey to frontend
 - create .env file where backend is located
+- Running command arguments - command appInReleaseMode=release|any mainDatabase=true|any
+  - Command examples
+  - ./main release true // full release mode
+  - ./main anything true // using http and main database
+  - ./main release false // uses local database
+  - ./main anything false // http and local database mode
+  - ./main // http and local database mod
 - .env example 
     - MONGO={MONGO_CONNECTION_STRING}
     - ENCRYPTION_KEY={32_key_long_string}
@@ -30,10 +37,10 @@ Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
   - go build main.go
   - ./main
 - Release mode runs on https://localhost:3100 
-  - go run main.go release
+  - go run main.go release true
   - or
   - go build main.go
-  - ./main release
+  - ./main release true
 - Changing ssl certificates to your own website
   - Generate ssl certificate from letsencrypt
   - change cert.pem to your own certificate
