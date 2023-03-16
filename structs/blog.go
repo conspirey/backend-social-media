@@ -1,9 +1,16 @@
 package structs
 
 import (
+	"encoding/json"
 	"fmt"
+	mongof "main/functions/mongo"
 	"main/functions/snowflake"
 	"time"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Blog struct {
@@ -20,6 +27,26 @@ type Author struct {
 	ID   string `json:"id"`
 }
 
+func GetBlogs(filter any, option *options.FindOptions, db *mongo.Database) ([]primitive.M, error) {
+	data, err := mongof.Find(option, filter, db, "blog")
+	if err != nil {
+		return []primitive.M{}, err
+	}
+	return data, nil
+}
+
+func (blog Blog) Exists(db *mongo.Database) (exists bool) {
+	data, err := mongof.FindOne(bson.M{
+		"id": blog.ID,
+	}, options.FindOne(), db, "blog")
+	if err != nil {
+		return false
+	}
+	if data["id"] != nil {
+		return true
+	}
+	return false
+}
 func (blog Blog) ValidID() bool {
 	return blog.ID != ""
 }
@@ -35,4 +62,24 @@ func (blog *Blog) GenerateID() string {
 
 	blog.ID = id
 	return id
+}
+func (blog *Blog) MapToBlog(umap map[string]any) {
+	by, err := json.Marshal(umap)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(by, &blog); err != nil {
+		panic(err)
+	}
+}
+func (blog *Blog) ToMap() map[string]any {
+	by, err := json.Marshal(blog)
+	if err != nil {
+		panic(err)
+	}
+	UMap := map[string]any{}
+	if err := json.Unmarshal(by, &UMap); err != nil {
+		panic(err)
+	}
+	return UMap
 }

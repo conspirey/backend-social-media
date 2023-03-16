@@ -209,6 +209,7 @@ func (user *User) ToMap() map[string]any {
 	}
 	return UMap
 }
+//Deprecated
 func (user *User) ToMapCookie() map[string]any {
 	user.Password = ""
 	user.IP = ""

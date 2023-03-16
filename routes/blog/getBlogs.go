@@ -1,11 +1,15 @@
 package blog
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
+	"io/ioutil"
 	"main/structs"
+	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // GetBlogs
@@ -19,42 +23,39 @@ Get blog posts
 
 
 */
+type BlogJSONOptions struct {
+}
+
 func GetBlogs(c *gin.Context, db *mongo.Database) {
-	blog := structs.Blog{}
-	user := structs.User{}
-	idChan := make(chan string)
-	id2 := make(chan string)
-	go func() {
-		id := blog.GenerateID()
-		idChan <- id
-	}()
-	go func() {
-		id := user.CreateID()
-		id2 <- id
-	}()
-	ids1 := <-idChan
-	ids2 := <-id2
-	c.String(200, fmt.Sprintf("blog: %s \n user: %s", ids1, ids2))
-	//session := sessions.Default(c)
-	//user := session.Get("user")
-	//if user != nil {
-	//	userSTR := &structs.User{}
-	//	userSTR.MapToUser(user.(map[string]any))
-	//	if !userSTR.AccountExists(db) {
-	//		c.JSON(404, Error("user not found", "user_not_found"))
-	//		return
-	//	}
-	//	if err := userSTR.FetchData(db); err != nil {
-	//		c.JSON(400, Error(err.Error(), "error"))
-	//		return
-	//	}
-	//	userM := userSTR.ToMap()
-	//	structs.StripMapOfImportantInfo(userM)
-	//	c.JSON(200, userM)
-	//
-	//} else {
-	//	c.JSON(200, Error("User is not logged in", "user_not_logged_in"))
-	//}
+	limit, _ := strconv.Atoi(c.Query("limit"))
+	filter := bson.M{}
+	body, errBody := ioutil.ReadAll(c.Request.Body)
+	if errBody != nil {
+		c.JSON(400, Error("failed reading body", "reading_error"))
+		return
+	}
+	if len(body) != 0 {
+		if errJS := c.ShouldBindJSON(&filter); errJS != nil {
+			c.JSON(400, Error("failed binding json", "json_error"))
+			return
+		}
+	}
+	option := options.Find()
+	if limit != 0 {
+		option.SetLimit(int64(limit))
+	}
+
+	data, err := structs.GetBlogs(filter, option, db)
+	if err != nil {
+		c.JSON(400, Error(err.Error(), "error"))
+		return
+	}
+	if len(data) == 0 {
+		c.JSON(200, []bson.M{})
+		return
+	}
+	c.JSON(200, data)
+
 }
 func ErrSep(text string) string {
 	t := strings.Split(text, ":")
