@@ -17,26 +17,24 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
-
 var (
 	NAME_REGEX     = regexp.MustCompile("^[a-zA-Z0-9_]{3,16}$")
 	PASSWORD_REGEX = regexp.MustCompile(`^.{8,32}$`)
-	Key = os.Getenv("ENCRYPTION_KEY")
+	Key            = os.Getenv("ENCRYPTION_KEY")
 )
 
 //DIsplayName feature
 
 type User struct {
-	Name     string `json:"name"`
-	Password string `json:"password,omitempty"`
-	ID       string `json:"id"`
-	IP       string `json:"ip,omitempty"`
-	Admin 	 bool	`json:"admin"`
-	Banned   bool	`json:"banned"`
-	BannedUntil int64 `json:"banned_until"`
-	
+	Name        string `json:"name"`
+	Password    string `json:"password,omitempty"`
+	ID          string `json:"id"`
+	IP          string `json:"ip,omitempty"`
+	Admin       bool   `json:"admin"`
+	Banned      bool   `json:"banned"`
+	BannedUntil int64  `json:"banned_until"`
 }
+
 func StripMapOfImportantInfo(u map[string]any) {
 	delete(u, "ip")
 	delete(u, "password")
@@ -74,6 +72,7 @@ func (user *User) AccountExists(db *mongo.Database) bool {
 	// _, errsIP := user.EncryptIP(true)
 	data, _ := mongof.FindOne(bson.M{
 		"name": strings.ToLower(user.Name),
+		"id":   strings.ToLower(user.ID),
 		// "password": user.Password,
 	}, options.FindOne(), db, "user")
 	if data != nil {
@@ -106,15 +105,14 @@ func (user *User) FetchData(db *mongo.Database) error {
 		return errs
 	}
 	data, errsS := mongof.FindOne(bson.M{
-		"name":     strings.ToLower(user.Name),
-		"password": user.Password,
+		"name": strings.ToLower(user.Name),
+		//"password": user.Password,
 	}, options.FindOne(), db, "user")
 	if errsS != nil {
 		return errsS
 	}
 	user.MapToUser(data)
 	_, err := user.DecryptPassword(true)
-
 	return err
 }
 func (user *User) Login(username, password string, db *mongo.Database) error {
