@@ -67,6 +67,10 @@ func CreateBlog(c *gin.Context, db *mongo.Database) {
 	}
 	blog.Author.ID = userSTR.ID
 	blog.Author.Name = userSTR.Name
+	if err := blog.Create(db); err != nil {
+		c.JSON(400, Error("failed inserting blog to database", "database_error"))
+		return
+	}
 	c.JSON(200, blog)
 
 }

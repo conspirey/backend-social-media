@@ -35,7 +35,10 @@ func GetBlogs(filter any, option *options.FindOptions, db *mongo.Database) ([]pr
 	}
 	return data, nil
 }
-
+func (blog *Blog) Create(db *mongo.Database) (error) {
+	_, err := mongof.InsertOne(blog, options.InsertOne(), db, "blog")
+	return err
+}
 func (blog Blog) Exists(db *mongo.Database) (exists bool) {
 	data, err := mongof.FindOne(bson.M{
 		"id": blog.ID,

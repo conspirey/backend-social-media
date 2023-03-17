@@ -1,7 +1,6 @@
 package blog
 
 import (
-	"io/ioutil"
 	"main/structs"
 	"strconv"
 	"strings"
@@ -24,22 +23,23 @@ Get blog posts
 
 */
 type BlogJSONOptions struct {
+	Description string `json:"description"`
 }
 
 func GetBlogs(c *gin.Context, db *mongo.Database) {
 	limit, _ := strconv.Atoi(c.Query("limit"))
-	filter := bson.M{}
-	body, errBody := ioutil.ReadAll(c.Request.Body)
-	if errBody != nil {
-		c.JSON(400, Error("failed reading body", "reading_error"))
-		return
-	}
-	if len(body) != 0 {
-		if errJS := c.ShouldBindJSON(&filter); errJS != nil {
-			c.JSON(400, Error("failed binding json", "json_error"))
-			return
-		}
-	}
+	// author := c.Query("author")
+	// id := c.Query()
+	var filter = map[string]any{}
+
+
+	// if len(body) != 0 {
+	// 	if errJS := c.BindJSON(&filter); errJS != nil {
+	// 		fmt.Println(errJS, filter)
+	// 		c.JSON(400, Error("failed binding json", "json_error"))
+	// 		return
+	// 	}
+	// }
 	option := options.Find()
 	if limit != 0 {
 		option.SetLimit(int64(limit))
