@@ -5,7 +5,7 @@ import (
 	"fmt"
 	mongof "main/functions/mongo"
 	"main/functions/snowflake"
-	"time"
+	
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,10 +17,11 @@ type Blog struct {
 	ID        string    `json:"id"`
 	Title     string    `json:"title"`
 	Body      string    `json:"body"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	CreatedAt int64 `json:"created_at"`
+	UpdatedAt int64 `json:"updated_at"`
 	Author    *Author   `json:"author"`
 	Tags      []string  `json:"tags"`
+	Description string `json:"description"`
 }
 type Author struct {
 	Name string `json:"name"`

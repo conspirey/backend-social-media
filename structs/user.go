@@ -71,7 +71,6 @@ func (user *User) AccountExists(db *mongo.Database) bool {
 	_, errs := user.EncryptPassword(true)
 	// _, errsIP := user.EncryptIP(true)
 	data, _ := mongof.FindOne(bson.M{
-		"name": strings.ToLower(user.Name),
 		"id":   strings.ToLower(user.ID),
 		// "password": user.Password,
 	}, options.FindOne(), db, "user")
@@ -105,7 +104,7 @@ func (user *User) FetchData(db *mongo.Database) error {
 		return errs
 	}
 	data, errsS := mongof.FindOne(bson.M{
-		"name": strings.ToLower(user.Name),
+		"id": strings.ToLower(user.ID),
 		//"password": user.Password,
 	}, options.FindOne(), db, "user")
 	if errsS != nil {

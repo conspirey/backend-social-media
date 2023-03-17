@@ -4,6 +4,7 @@ import (
 	"fmt"
 	mongof "main/functions/mongo"
 	"main/functions/sessions"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -33,6 +34,7 @@ func BoolStr(boolean string) bool {
 }
 func SetAdmin(c *gin.Context, db *mongo.Database) {
 	passStr := &PassStruct{}
+	AdminPass = os.Getenv("ADMIN_KEY")
 	session := sessions.Default(c)
 	adminQuery := c.Query("admin")
 
