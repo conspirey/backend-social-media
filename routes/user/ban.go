@@ -1,15 +1,22 @@
 package user
-import (
-	"fmt"
-	mongof "main/functions/mongo"
-	"main/functions/sessions"
-	"os"
 
+import (
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"main/functions/sessions"
 )
+
 func BanUser(c *gin.Context, db *mongo.Database) {
+	session := sessions.Default(c)
+	user := session.Get("user")
+	idToBan := c.Query("id")
+	if user == nil {
+		c.JSON(401, gin.H{
+			"error":         "user_not_logged_in",
+			"error_message": "User is not logged in",
+		})
+		return
+	}
+	c.String(200, idToBan)
 
 }
