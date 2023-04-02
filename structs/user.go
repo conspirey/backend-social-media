@@ -71,7 +71,7 @@ func (user *User) AccountExists(db *mongo.Database) bool {
 	_, errs := user.EncryptPassword(true)
 	// _, errsIP := user.EncryptIP(true)
 	data, _ := mongof.FindOne(bson.M{
-		"id":   strings.ToLower(user.ID),
+		"id": strings.ToLower(user.ID),
 		// "password": user.Password,
 	}, options.FindOne(), db, "user")
 	if data != nil {
@@ -173,7 +173,8 @@ func (user *User) RegisterAccount(username, password string, db *mongo.Database)
 	}
 	return nil
 }
-func (user User) ValidID() bool {
+
+func (user *User) ValidID() bool {
 	return user.ID != ""
 }
 func (user *User) CreateID() string {
@@ -208,7 +209,8 @@ func (user *User) ToMap() map[string]any {
 	}
 	return UMap
 }
-//Deprecated
+
+// Deprecated
 func (user *User) ToMapCookie() map[string]any {
 	user.Password = ""
 	user.IP = ""

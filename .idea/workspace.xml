@@ -4,8 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d4a3bd7-08b8-4e8a-a702-bcbb0213e9e3" name="Changes" comment="">
+    <list default="true" id="7d4a3bd7-08b8-4e8a-a702-bcbb0213e9e3" name="Changes" comment="ban is not finished but the app will compile">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/loader.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/loader.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user/admin.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user/admin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/user/ban.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user/ban.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/structs/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/structs/user.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +51,7 @@
     &quot;configurable..is.expanded&quot;: &quot;false&quot;,
     &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lietotājs/Documents/GitHub/conspiracy/backend-social-media/main.go&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lietotājs/Documents/GitHub/conspiracy/backend-social-media&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -91,9 +95,13 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <configuration name="rest-api | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/rest-api.http" requestIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="HTTP Request.rest-api | #1" />
         <item itemvalue="Go Build.go build main" />
       </list>
     </recent_temporary>
@@ -112,6 +120,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ban is not finished but the app will compile" />
+    <option name="LAST_COMMIT_MESSAGE" value="ban is not finished but the app will compile" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

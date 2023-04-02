@@ -24,6 +24,9 @@ func LoadRoutes(r *gin.Engine, db *mongo.Database, server *gosocketio.Server) {
 	api.GET("/blog", func(c *gin.Context) {
 		blog.GetBlogs(c, db)
 	})
+	api.PATCH("/user/ban", func(c *gin.Context) {
+		user.BanUser(c, db)
+	})
 	api.POST("/blog", func(c *gin.Context) {
 		blog.CreateBlog(c, db)
 	})

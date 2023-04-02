@@ -12,9 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var (
-
-)
+var ()
 
 /*
 PATCH REQUEST
@@ -29,17 +27,24 @@ JSON BODY:
 type PassStruct struct {
 	Pass string `json:"pass"`
 }
+
 func BoolStr(boolean string) bool {
 	return boolean == "true"
 }
 func SetAdmin(c *gin.Context, db *mongo.Database) {
 	passStr := &PassStruct{}
-	AdminPass = os.Getenv("ADMIN_KEY")
+	AdminPass := os.Getenv("ADMIN_KEY")
 	session := sessions.Default(c)
 	adminQuery := c.Query("admin")
-
+	key := c.Query("key")
 	if session.Get("user") != nil {
-
+		if key != AdminPass {
+			c.JSON(400, gin.H{
+				"error":         "admin_key_invalid",
+				"error_message": "admin key is required to use this endpoint",
+			})
+			return
+		}
 		if adminQuery != "true" && adminQuery != "false" {
 			c.JSON(400, gin.H{
 				"error":         "admin_query_not_valid",
