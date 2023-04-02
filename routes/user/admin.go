@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	AdminPass = "^jb@?@qbqPj@REV8vRsDW-$njnaHcXb9dn87EA%x"
+
 )
 
 /*
