@@ -24,11 +24,11 @@ RUN apt update && apt install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/main /app/main
 
 # Copy the frontend build from the frontend build stage
-COPY --from=frontend-build /app/frontend/build /app/frontend/build
+COPY --from=frontend-build /app/frontend/dist /app/frontend/dist
 
 ENV PORT=313
 
 # Expose the port
 EXPOSE $PORT
-CMD ["./main"]
+CMD ["sh", "-c", "./main"]
 
